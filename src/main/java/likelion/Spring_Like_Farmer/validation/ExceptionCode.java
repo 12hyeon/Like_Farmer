@@ -1,0 +1,65 @@
+package likelion.Spring_Like_Farmer.validation;
+
+import static likelion.Spring_Like_Farmer.validation.HttpStatus.*;
+
+public enum ExceptionCode {
+    /**
+     * 회원가입 및 로그인
+     */
+    SIGNUP_CREATED_OK(CREATED, "A000", "회원가입 성공"),
+    SIGNUP_DUPLICATED_ID(DUPLICATED_VALUE, "A002", "ID 중복"),
+    SIGNUP_DUPLICATED_NICKNAME(DUPLICATED_VALUE, "A003", "NICKNAME 중복"),
+
+    LOGIN_OK(SUCCESS, "B000", "로그인 성공"),
+    LOGIN_NOT_FOUND_ID(NOT_FOUND_VALUE, "B001", "잘못된 ID 로그인 실패"),
+    LOGIN_NOT_FOUND_PW(NOT_FOUND_VALUE, "B002", "잘못된 PW 로그인 실패"),
+    LOGOUT_OK(SUCCESS, "B003", "로그아웃 성공"),
+    LOGOUT_INVALID(NOT_FOUND_VALUE, "B004", "로그아웃 실패"),
+
+    /**
+     * 회원정보
+     */
+    USER_GET_OK(SUCCESS, "C000", "회원정보 있음"),
+    USER_NOT_FOUND(NOT_FOUND_VALUE, "C001", "회원정보 없음"),
+    USER_UPDATE_OK(SUCCESS, "C002", "회원정보 수정 성공"),
+    USER_SEARCH_OK(SUCCESS, "C003", "회원 검색 성공"),
+    USER_SAVE_ID_OK(SUCCESS, "C004", "NICKNAME 수정 성공"),
+
+    
+    /**
+     *  토큰
+     */
+    INVALID_JWT_SIGNATURE(UNAUTHORIZED,"G000", "타당하지 않은 JWT 서명 오류"),
+    INVALID_JWT_TOKEN(UNAUTHORIZED,"G001", "잘못된 JWT 토큰 오류"),
+    EXPIRED_JWT_TOKEN(UNAUTHORIZED,"G002", "만료된 JWT 토큰 오류"),
+    UNSUPPORTED_JWT_TOKEN(UNAUTHORIZED,"G003", "지원되지 않는 JWT 토큰 오류"),
+    TOKEN_SUCCESS(SUCCESS, "G005", "토큰 확인 성공"),
+
+    /**
+     * 잘못된 ExceptionCode
+     */
+    INVALID_FORM(INVALID_ACCESS, "Z000", "형식에 어긋난 이름"),
+    EMPTY(null, "", "");
+
+    private final HttpStatus status;
+    private final String code;
+    private final String message;
+
+    ExceptionCode(HttpStatus status, String code, String message) {
+        this.status = status;
+        this.code = code;
+        this.message = message;
+    }
+
+    public HttpStatus getStatus() {
+        return status;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+}
