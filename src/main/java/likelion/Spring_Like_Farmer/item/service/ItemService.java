@@ -3,18 +3,17 @@ package likelion.Spring_Like_Farmer.item.service;
 import likelion.Spring_Like_Farmer.item.domain.Item;
 import likelion.Spring_Like_Farmer.item.dto.ItemDto;
 import likelion.Spring_Like_Farmer.item.repository.ItemRepository;
-import likelion.Spring_Like_Farmer.item.domain.Item;
-import likelion.Spring_Like_Farmer.item.dto.ItemDto;
+import likelion.Spring_Like_Farmer.record.dto.RecordDto;
 import likelion.Spring_Like_Farmer.security.UserPrincipal;
 import likelion.Spring_Like_Farmer.user.domain.User;
 import likelion.Spring_Like_Farmer.user.repository.UserRepository;
-import likelion.Spring_Like_Farmer.validation.CustomException;
 import likelion.Spring_Like_Farmer.validation.ExceptionCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -46,9 +45,11 @@ public class ItemService {
 
     public Object updateItem(UserPrincipal itemPrincipal, Long itemId, ItemDto.SaveItem saveItem) {
 
-        Item item = itemRepository.findByItemId(itemId)
-                .orElseThrow(() -> new CustomException(ExceptionCode.ITEM_NOT_FOUND));
-
+        Optional<Item> findItem = itemRepository.findByItemId(itemId);
+        if (findItem.isEmpty()) {
+            return new RecordDto.RecordResponse(ExceptionCode.ITEM_NOT_FOUND);
+        }
+        Item item = findItem.get();
 
         item.updateItem(saveItem);
         itemRepository.save(item);
@@ -58,10 +59,11 @@ public class ItemService {
 
     public Object deleteItem(UserPrincipal itemPrincipal, Long itemId) {
 
-        Item item = itemRepository.findByItemId(itemId)
-                .orElseThrow(() -> new CustomException(ExceptionCode.ITEM_NOT_FOUND));
-
-
+        Optional<Item> findItem = itemRepository.findByItemId(itemId);
+        if (findItem.isEmpty()) {
+            return new RecordDto.RecordResponse(ExceptionCode.ITEM_NOT_FOUND);
+        }
+        Item item = findItem.get();
 
         itemRepository.delete(item);
         
