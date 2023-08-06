@@ -1,10 +1,14 @@
 package likelion.Spring_Like_Farmer.item.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import likelion.Spring_Like_Farmer.config.BaseEntity;
 import likelion.Spring_Like_Farmer.item.dto.ItemDto;
 import likelion.Spring_Like_Farmer.user.domain.User;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 
 @Getter
@@ -17,8 +21,9 @@ public class Item extends BaseEntity {
     @Column(name = "item_id")
     private Long itemId;
 
-    @ManyToOne
-    @JoinColumn(name = "user_user_id")
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "item_item_id")
     private User user;
 
     @Column(nullable = false)
@@ -33,6 +38,11 @@ public class Item extends BaseEntity {
         this.title = saveItem.getTitle();
         this.gram = saveItem.getGram();
         this.user = user;
+    }
+
+    public void updateItem(ItemDto.SaveItem saveItem) {
+        this.title = saveItem.getTitle();
+        this.gram = saveItem.getGram();
     }
 
 }

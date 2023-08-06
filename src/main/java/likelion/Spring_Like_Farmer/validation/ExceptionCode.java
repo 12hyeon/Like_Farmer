@@ -44,6 +44,12 @@ public enum ExceptionCode {
     ITEM_GET_OK(SUCCESS, "I003", "ITEM 조회 성공"),
     ITEM_DELETE_OK(SUCCESS, "I004", "ITEM 삭제 성공"),
 
+    RECORD_SAVE_OK(SUCCESS, "J000", "RECORD 저장 성공"),
+    RECORD_NOT_FOUND(NOT_FOUND_VALUE, "J001", "RECORD 정보 없음"),
+    RECORD_UPDATE_OK(SUCCESS, "J002", "RECORD 수정 성공"),
+    RECORD_GET_OK(SUCCESS, "J003", "RECORD 조회 성공"),
+    RECORD_DELETE_OK(SUCCESS, "J004", "RECORD 삭제 성공"),
+
     /**
      * 잘못된 ExceptionCode
      */
