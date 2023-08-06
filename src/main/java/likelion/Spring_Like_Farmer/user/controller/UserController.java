@@ -1,5 +1,6 @@
 package likelion.Spring_Like_Farmer.user.controller;
 
+import likelion.Spring_Like_Farmer.item.dto.ItemDto;
 import likelion.Spring_Like_Farmer.security.CurrentUser;
 import likelion.Spring_Like_Farmer.security.UserPrincipal;
 import likelion.Spring_Like_Farmer.user.dto.UserDto;
@@ -7,10 +8,9 @@ import likelion.Spring_Like_Farmer.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
@@ -25,11 +25,24 @@ public class UserController {
         return new ResponseEntity<>(userService.login(loginUser), HttpStatus.OK);
     }
 
-    @GetMapping("/users/{userId}")
-    public ResponseEntity<Object> login(@CurrentUser UserPrincipal userPrincipal,
+    // 프로필 조회
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<Object> getUserInfo(@CurrentUser UserPrincipal userPrincipal,
                                         @PathVariable Long userId) {
         return new ResponseEntity<>(userService.findUser(userPrincipal, userId), HttpStatus.OK);
     }
+
+    // 프로필 수정
+    @PatchMapping("/user")
+    public ResponseEntity<Object> getUserInfo(@CurrentUser UserPrincipal userPrincipal,
+                                              @RequestBody UserDto.UpdateUser updateUser) {
+        return new ResponseEntity<>(userService.updateUser(userPrincipal, updateUser), HttpStatus.OK);
+    }
+
+    // 프로필 사진 올리기 -> tier 2
+
+    // 글 올리기 -> tier 3
+
 
     /*@PostMapping("/user/logout") // 로그아웃
     public ResponseEntity<Object> logout(@CurrentUser UserPrincipal userPrincipal) {

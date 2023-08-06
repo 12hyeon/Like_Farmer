@@ -71,7 +71,7 @@ public class SecurityConfig {
                         .requestMatchers("/auth/**").permitAll()
                         .anyRequest().authenticated()
                 )
-                .csrf((csrf) -> csrf.ignoringRequestMatchers("/auth/**"))
+                .csrf((csrf) -> csrf.ignoringRequestMatchers("/**"))
                 .httpBasic(Customizer.withDefaults())
                 //.oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
                 .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

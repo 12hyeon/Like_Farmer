@@ -2,12 +2,15 @@ package likelion.Spring_Like_Farmer.user.domain;
 
 import jakarta.persistence.*;
 import likelion.Spring_Like_Farmer.config.BaseEntity;
+import likelion.Spring_Like_Farmer.user.dto.RecordDto;
 import likelion.Spring_Like_Farmer.user.dto.UserDto;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
+
+import java.util.List;
 
 @Getter
 @Entity
@@ -34,15 +37,18 @@ public class User extends BaseEntity {
     @Column(nullable = false)
     private String location;
 
-    @ColumnDefault("0")
-    private int checkInt;
-    private String checkId;
+    private String image; // 처리 로직 필요!
 
     @Column(length = 400)
     private String token;
 
-    private String image;
+    private int tier;
+    private Quest.QuestInfo description;
 
+    private String phone;
+    private String field;
+    private String spec;
+    private String license;
 
     // builder
     @Builder
@@ -52,11 +58,19 @@ public class User extends BaseEntity {
         this.name = signupUser.getName();
         this.nickname = signupUser.getNickname();
         this.location = signupUser.getLocation();
+        this.tier = 1;
+        this.description = Quest.QuestInfo.ONE;
     }
 
-    /*public void changePassword(String password) {
-        this.pw = password;
-    }*/
+    public void updateUser(UserDto.UpdateUser updateUser) {
+        this.nickname = updateUser.getNickname();
+        this.location = updateUser.getLocation();
+
+        this.phone = updateUser.getPhone();
+        this.field = updateUser.getField();
+        this.spec = updateUser.getSpec();
+        this.license = updateUser.getLicense();
+    }
 
     public void setToken(String token) {
         this.token = token;
@@ -64,15 +78,10 @@ public class User extends BaseEntity {
 
     public void setImage(String image) {
         this.image = image;
+        if (tier == 1) {
+            tier = 2;
+            description = Quest.QuestInfo.TWO;
+        }
     }
 
-    public void setCheckId(String checkId) {
-        this.checkId = checkId;
-        this.checkInt = 1; // id 중복 확인
-    }
-
-    public void setId() {
-        id = checkId;
-        checkInt = 2; // id 변경 완료
-    }
 }

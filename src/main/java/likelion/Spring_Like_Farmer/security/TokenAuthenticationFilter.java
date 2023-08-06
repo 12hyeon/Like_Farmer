@@ -84,7 +84,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
     private void createResponse(ExceptionCode exceptionCode, HttpServletResponse response) throws IOException {
         ObjectNode json = new ObjectMapper().createObjectNode();
-        json.put("state", HttpServletResponse.SC_UNAUTHORIZED); // exceptionCode.getStatus().getValue()
+        json.put("state", HttpServletResponse.SC_UNAUTHORIZED);
         json.put("code", exceptionCode.getCode());
 
         //String message = exceptionCode.getMessage();

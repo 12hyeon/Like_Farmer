@@ -36,6 +36,15 @@ public enum ExceptionCode {
     TOKEN_SUCCESS(SUCCESS, "G005", "토큰 확인 성공"),
 
     /**
+     * item정보
+     */
+    ITEM_SAVE_OK(SUCCESS, "I000", "ITEM 저장 성공"),
+    ITEM_NOT_FOUND(NOT_FOUND_VALUE, "I001", "ITEM 정보 없음"),
+    ITEM_UPDATE_OK(SUCCESS, "I002", "ITEM 수정 성공"),
+    ITEM_GET_OK(SUCCESS, "I003", "ITEM 조회 성공"),
+    ITEM_DELETE_OK(SUCCESS, "I004", "ITEM 삭제 성공"),
+
+    /**
      * 잘못된 ExceptionCode
      */
     INVALID_FORM(INVALID_ACCESS, "Z000", "형식에 어긋난 이름"),

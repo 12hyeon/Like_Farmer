@@ -2,6 +2,8 @@ package likelion.Spring_Like_Farmer.user.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import likelion.Spring_Like_Farmer.config.ResponseType;
+import likelion.Spring_Like_Farmer.item.domain.Item;
+import likelion.Spring_Like_Farmer.record.domain.Record;
 import likelion.Spring_Like_Farmer.user.domain.User;
 import likelion.Spring_Like_Farmer.validation.ExceptionCode;
 import lombok.Data;
@@ -26,8 +28,10 @@ public class UserDto {
     public static class UpdateUser {
         String nickname;
         String location;
-        String description;
-        List<User> items;
+        String phone;
+        String field;
+        String spec;
+        String license;
     }
 
     @Getter
@@ -56,14 +60,28 @@ public class UserDto {
         String name;
         String nickname;
         String location;
+        String phone;
+        String field;
+        String spec;
+        String license;
 
-        public UserInfoResponse(ExceptionCode exceptionCode, User user) {
+        List<Item> items;
+        List<Record> records;
+
+        public UserInfoResponse(ExceptionCode exceptionCode, User user, List<Item> items, List<Record> records) {
             super(exceptionCode);
             this.userId = user.getUserId();
             this.nickname = user.getNickname();
             this.name = user.getName();
             this.location = user.getLocation();
+            this.phone = user.getPhone();
+            this.field = user.getField();
+            this.spec = user.getSpec();
+            this.license = user.getLicense();
+            this.items = items;
+            this.records = records;
         }
+
     }
 
     @Getter
@@ -159,14 +177,13 @@ public class UserDto {
         Long userId;
         String id;
         String userName;
+        String image;
 
-        ImageDto.ImageUrlResponse image;
-
-        public UserInfo(User user, ImageDto.ImageUrlResponse imageUrlResponse) {
+        public UserInfo(User user, String image) {
             this.userId = user.getUserId();
             this.id = user.getId();
             this.userName = user.getName();
-            this.image = imageUrlResponse;
+            this.image = image;
 
         }
     }

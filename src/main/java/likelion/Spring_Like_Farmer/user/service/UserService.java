@@ -1,5 +1,9 @@
 package likelion.Spring_Like_Farmer.user.service;
 
+import likelion.Spring_Like_Farmer.item.domain.Item;
+import likelion.Spring_Like_Farmer.item.repository.ItemRepository;
+import likelion.Spring_Like_Farmer.record.domain.Record;
+import likelion.Spring_Like_Farmer.record.repository.RecordRepository;
 import likelion.Spring_Like_Farmer.security.TokenProvider;
 import likelion.Spring_Like_Farmer.security.UserPrincipal;
 import likelion.Spring_Like_Farmer.user.domain.User;
@@ -9,7 +13,6 @@ import likelion.Spring_Like_Farmer.user.repository.UserRepository;
 import likelion.Spring_Like_Farmer.validation.CustomException;
 import likelion.Spring_Like_Farmer.validation.ExceptionCode;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -19,6 +22,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -28,6 +32,8 @@ import java.util.Optional;
 public class UserService {
     
     private final UserRepository userRepository;
+    private final RecordRepository recordRepository;
+    private final ItemRepository itemRepository;
     private final TokenProvider tokenProvider;
     private final AuthenticationManager authenticationManager;
 
@@ -56,7 +62,6 @@ public class UserService {
 
         PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
         User user = new User(signupUser, encoder.encode(signupUser.getPw()));
-
         userRepository.save(user);
 
         return new UserDto.UserResponse(ExceptionCode.SIGNUP_CREATED_OK);
@@ -88,7 +93,7 @@ public class UserService {
         return new UserDto.LoginResponse(ExceptionCode.LOGIN_OK, findUser.get(), tokenDto);
     }
 
-    public Object updateNickname(UserPrincipal userPrincipal, UserDto.UpdateUser updateUser) {
+    public Object updateUser(UserPrincipal userPrincipal, UserDto.UpdateUser updateUser) {
 
         User user = userRepository.findByUserId(userPrincipal.getUserId())
                 .orElseThrow(
@@ -96,20 +101,22 @@ public class UserService {
                             throw new CustomException(ExceptionCode.USER_NOT_FOUND);
                         });
 
-        // description, location update
+        user.updateUser(updateUser);
+        userRepository.save(user);
 
         return new UserDto.UserResponse(ExceptionCode.USER_UPDATE_OK);
     }
 
+
+    // 전체 조회
     public Object findUser(UserPrincipal userPrincipal, Long userId) {
 
         User user = userRepository.findByUserId(userId)
-                .orElseThrow(
-                        () -> {
-                            throw new CustomException(ExceptionCode.USER_NOT_FOUND);
-                        });
+                .orElseThrow(() -> new CustomException(ExceptionCode.USER_NOT_FOUND));
 
-        return new UserDto.UserInfoResponse(ExceptionCode.USER_GET_OK, user);
+        List<Item> items = itemRepository.findAllByUserUserId(user.getUserId());
+        List<Record> records = recordRepository.findAllByUserUserId(user.getUserId());
+
+        return new UserDto.UserInfoResponse(ExceptionCode.USER_GET_OK, user, items, records);
     }
-
 }
