@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
+@Setter
 @NoArgsConstructor
 public class CommentDto {
     private Long commentId;
@@ -33,9 +34,10 @@ public class CommentDto {
     @Setter
     public static class UpdateComment {
         private String content;
-
         public UpdateComment(String content) {
             this.content = content;
         }
     }
+
+
 }

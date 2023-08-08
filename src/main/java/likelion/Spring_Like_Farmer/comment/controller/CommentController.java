@@ -11,16 +11,22 @@ import org.springframework.web.bind.annotation.*;
 public class CommentController {
     private final CommentService commentService;
 
-    // Create a new comment
+    // 댓글 달기
     @PostMapping("/create")
     public Long createComment(@RequestBody CommentDto.CreateComment request) {
         return commentService.createComment(request);
     }
 
-    // Update a comment
+    // 댓글 수정하기
     @PutMapping("/update/{commentId}")
     public void updateComment(@PathVariable Long commentId,
                               @RequestBody CommentDto.UpdateComment request) {
         commentService.updateComment(commentId, request);
+    }
+
+    // 댓글 삭제하기
+    @DeleteMapping("/delete/{commentId}")
+    public void deleteComment(@PathVariable Long commentId) {
+        commentService.deleteComment(commentId);
     }
 }

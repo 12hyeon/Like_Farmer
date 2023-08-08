@@ -18,7 +18,7 @@ public class CommentService {
     @Transactional
     public Long createComment(CommentDto.CreateComment request) {
         Post post = postRepository.findById(request.getPostId())
-                .orElseThrow(() -> new IllegalArgumentException("Post not found with id: " + request.getPostId()));
+                .orElseThrow(() -> new IllegalArgumentException("해당 댓글이 달린 게시글(postId: " + request.getPostId() + ")을 찾을 수 없습니다."));
         Comment comment = new Comment(request.getNickname(), request.getPassword(), request.getContent(), post);
         commentRepository.save(comment);
         return comment.getCommentId();
@@ -27,7 +27,14 @@ public class CommentService {
     @Transactional
     public void updateComment(Long commentId, CommentDto.UpdateComment request) {
         Comment comment = commentRepository.findById(commentId)
-                .orElseThrow(() -> new IllegalArgumentException("Comment not found with id: " + commentId));
+                .orElseThrow(() -> new IllegalArgumentException("해당 댓글(commentId:" + commentId + ")을 찾을 수 없습니다."));
         comment.setContent(request.getContent());
+    }
+
+    @Transactional
+    public void deleteComment(Long commentId) {
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 댓글(commentId:" + commentId + ")을 찾을 수 없습니다."));
+        commentRepository.delete(comment);
     }
 }
