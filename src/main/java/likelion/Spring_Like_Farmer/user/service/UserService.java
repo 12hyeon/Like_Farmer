@@ -106,7 +106,8 @@ public class UserService {
         user.updateUser(updateUser);
 
         if (file != null) {
-            user.setImage(fileService.saveFile(user.getUserId(), file, "profile"));
+            String image = fileService.saveFile(user.getUserId(), file, "profile");
+            user.setImage(image);
         }
 
         userRepository.save(user);
@@ -116,12 +117,12 @@ public class UserService {
 
     // 검색
     public Object findUsersTier(UserPrincipal userPrincipal, String keyword) {
-        List<User> findUser = userRepository.findByUserIdAndItemContainingOrderByTierDesc(userPrincipal.getUserId(), keyword);
+        List<User> findUser = userRepository.findByItemContainingOrderByTierDesc(keyword);
         return new UserDto.UsersInfoResponse(ExceptionCode.USER_SEARCH_OK, findUser);
     }
 
-    public Object findUsersItem(UserPrincipal userPrincipal, String keyword) {
-        List<User> findUser = userRepository.findByUserIdAndItemContainingOrderByUpdatedAtDesc(userPrincipal.getUserId(), keyword);
+    public Object findUsersPost(UserPrincipal userPrincipal, String keyword) {
+        List<User> findUser = userRepository.findByItemContainingOrderByUpdatedAtDesc(keyword);
         return new UserDto.UsersInfoResponse(ExceptionCode.USER_SEARCH_OK, findUser);
     }
 
@@ -148,3 +149,4 @@ public class UserService {
         return new UserDto.UserInfoResponse(ExceptionCode.USER_GET_OK, user, items, records);
     }
 }
+

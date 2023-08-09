@@ -27,28 +27,28 @@ public class UserController {
     }
 
     // 프로필 조회
-    @GetMapping("/user/{userId}")
+    @GetMapping("/user/profile/{userId}")
     public ResponseEntity<Object> getUsersInfo(@CurrentUser UserPrincipal userPrincipal,
                                         @PathVariable Long userId) {
         return new ResponseEntity<>(userService.findUser(userPrincipal, userId), HttpStatus.OK);
     }
 
     // 티어 기준 유저 리스트
-    @GetMapping("/user/tier/{keyword}")
+    @GetMapping("/user/tier")
     public ResponseEntity<Object> getUsersTier(@CurrentUser UserPrincipal userPrincipal,
-                                              @PathVariable String keyword) {
-        return new ResponseEntity<>(userService.findUsersTier(userPrincipal, keyword), HttpStatus.OK);
+                                              @RequestBody UserDto.FindUsers findUser) {
+        return new ResponseEntity<>(userService.findUsersTier(userPrincipal, findUser.getKeyword()), HttpStatus.OK);
     }
 
     // 농작물 기준 유저 리스트
-    @GetMapping("/user/item/{keyword}")
-    public ResponseEntity<Object> getUserItem(@CurrentUser UserPrincipal userPrincipal,
-                                              @PathVariable String keyword) {
-        return new ResponseEntity<>(userService.findUsersItem(userPrincipal, keyword), HttpStatus.OK);
+    @GetMapping("/user/post")
+    public ResponseEntity<Object> getUserPost(@CurrentUser UserPrincipal userPrincipal,
+                                              @RequestBody UserDto.FindUsers findUser) {
+        return new ResponseEntity<>(userService.findUsersPost(userPrincipal, findUser.getKeyword()), HttpStatus.OK);
     }
 
     // 유저 홈 정보
-    @GetMapping("/user/home/{userId}")
+    @GetMapping("/user/home")
     public ResponseEntity<Object> getUsersInfo(@CurrentUser UserPrincipal userPrincipal) {
         return new ResponseEntity<>(userService.findUserInfo(userPrincipal), HttpStatus.OK);
     }

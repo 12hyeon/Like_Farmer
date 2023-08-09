@@ -18,6 +18,11 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 public class UserDto {
 
     @Getter
+    public static class FindUsers {
+        String keyword;
+    }
+
+    @Getter
     public static class SignupUser {
         String id;
         String pw;
@@ -38,12 +43,14 @@ public class UserDto {
 
     @Getter
     public static class FindUser {
+        Long userId;
         String nickname;
         String name;
         String item;
         String image;
 
         public FindUser(User user) {
+            this.userId = user.getUserId();
             this.image = user.getImage();
             this.nickname = user.getNickname();
             this.name = user.getName();
@@ -107,6 +114,7 @@ public class UserDto {
         String license;
         int tier; // 추가
         String description;
+        String image;
         String item;
 
         List<Item> items;
@@ -124,6 +132,7 @@ public class UserDto {
             this.license = user.getLicense();
             this.tier = user.getTier();
             this.description = user.getDescription().getMessage();
+            this.image = user.getImage();
             this.item = user.getItem();
             this.items = items;
             this.records = records;

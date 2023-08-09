@@ -60,7 +60,7 @@ public class User extends BaseEntity {
         this.nickname = signupUser.getNickname();
         this.location = signupUser.getLocation();
         this.tier = 1;
-        this.item = "풀스택";
+        this.item = "";
         this.description = Quest.QuestInfo.ONE;
     }
 
