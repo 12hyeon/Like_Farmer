@@ -6,13 +6,13 @@ import likelion.Spring_Like_Farmer.record.repository.RecordRepository;
 import likelion.Spring_Like_Farmer.security.UserPrincipal;
 import likelion.Spring_Like_Farmer.user.domain.User;
 import likelion.Spring_Like_Farmer.user.repository.UserRepository;
-import likelion.Spring_Like_Farmer.validation.CustomException;
 import likelion.Spring_Like_Farmer.validation.ExceptionCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -45,8 +45,11 @@ public class RecordService {
 
     public Object updateRecord(UserPrincipal userPrincipal, Long recordId, RecordDto.SaveRecord saveRecord) {
 
-        Record record = recordRepository.findByRecordId(recordId)
-                .orElseThrow(() -> new CustomException(ExceptionCode.RECORD_NOT_FOUND));
+        Optional<Record> findRecord = recordRepository.findByRecordId(recordId);
+        if (findRecord.isEmpty()) {
+            return new RecordDto.RecordResponse(ExceptionCode.RECORD_NOT_FOUND);
+        }
+        Record record = findRecord.get();
 
         record.updateRecord(saveRecord);
         recordRepository.save(record);
@@ -56,8 +59,11 @@ public class RecordService {
 
     public Object deleteRecord(UserPrincipal recordPrincipal, Long recordId) {
 
-        Record record = recordRepository.findByRecordId(recordId)
-                .orElseThrow(() -> new CustomException(ExceptionCode.RECORD_NOT_FOUND));
+        Optional<Record> findRecord = recordRepository.findByRecordId(recordId);
+        if (findRecord.isEmpty()) {
+            return new RecordDto.RecordResponse(ExceptionCode.RECORD_NOT_FOUND);
+        }
+        Record record = findRecord.get();
 
         recordRepository.delete(record);
 

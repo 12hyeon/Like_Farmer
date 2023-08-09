@@ -27,9 +27,23 @@ public class UserController {
 
     // 프로필 조회
     @GetMapping("/user/{userId}")
-    public ResponseEntity<Object> getUserInfo(@CurrentUser UserPrincipal userPrincipal,
+    public ResponseEntity<Object> getUsersInfo(@CurrentUser UserPrincipal userPrincipal,
                                         @PathVariable Long userId) {
         return new ResponseEntity<>(userService.findUser(userPrincipal, userId), HttpStatus.OK);
+    }
+
+    // 유저 리스트 티어 순
+    @GetMapping("/user/tier/{keyword}")
+    public ResponseEntity<Object> getUsersTier(@CurrentUser UserPrincipal userPrincipal,
+                                              @PathVariable String keyword) {
+        return new ResponseEntity<>(userService.findUsersTier(userPrincipal, keyword), HttpStatus.OK);
+    }
+
+    // 농작물 기준 유저 리스트
+    @GetMapping("/user/item/{keyword}")
+    public ResponseEntity<Object> getUserItem(@CurrentUser UserPrincipal userPrincipal,
+                                              @PathVariable String keyword) {
+        return new ResponseEntity<>(userService.findUsers(userPrincipal, keyword), HttpStatus.OK);
     }
 
     // 프로필 수정

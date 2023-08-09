@@ -100,6 +100,9 @@ public class UserDto {
         @JsonInclude(NON_NULL)
         Long userId;
 
+        @JsonInclude(NON_NULL)
+        List<User> users;
+
         public UserResponse(ExceptionCode exceptionCode) {
             super(exceptionCode);
         }
@@ -107,6 +110,11 @@ public class UserDto {
         public UserResponse(ExceptionCode exceptionCode, Long userId) {
             super(exceptionCode);
             this.userId = userId;
+        }
+
+        public UserResponse(ExceptionCode exceptionCode, List<User> users) {
+            super(exceptionCode);
+            this.users = users;
         }
     }
 

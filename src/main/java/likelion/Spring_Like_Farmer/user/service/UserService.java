@@ -10,7 +10,6 @@ import likelion.Spring_Like_Farmer.user.domain.User;
 import likelion.Spring_Like_Farmer.user.dto.TokenDto;
 import likelion.Spring_Like_Farmer.user.dto.UserDto;
 import likelion.Spring_Like_Farmer.user.repository.UserRepository;
-import likelion.Spring_Like_Farmer.validation.CustomException;
 import likelion.Spring_Like_Farmer.validation.ExceptionCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -95,11 +94,11 @@ public class UserService {
 
     public Object updateUser(UserPrincipal userPrincipal, UserDto.UpdateUser updateUser) {
 
-        User user = userRepository.findByUserId(userPrincipal.getUserId())
-                .orElseThrow(
-                        () -> {
-                            throw new CustomException(ExceptionCode.USER_NOT_FOUND);
-                        });
+        Optional<User> findUser = userRepository.findByUserId(userPrincipal.getUserId());
+        if (findUser.isEmpty()) {
+            return new UserDto.UserResponse(ExceptionCode.USER_NOT_FOUND);
+        }
+        User user = findUser.get();
 
         user.updateUser(updateUser);
         userRepository.save(user);
@@ -107,12 +106,24 @@ public class UserService {
         return new UserDto.UserResponse(ExceptionCode.USER_UPDATE_OK);
     }
 
+    public Object findUsersTier(UserPrincipal userPrincipal, String keyword) {
+        List<User> findUser = userRepository.findByUserIdOrderByTierDesc(userPrincipal.getUserId());
+        return new UserDto.UserResponse(ExceptionCode.USER_SEARCH_OK, findUser);
+    }
+
+    public Object findUsers(UserPrincipal userPrincipal, String keyword) {
+        List<User> findUser = userRepository.findByUserIdOrderByUpdatedAtDesc(userPrincipal.getUserId());
+        return new UserDto.UserResponse(ExceptionCode.USER_SEARCH_OK, findUser);
+    }
 
     // 전체 조회
     public Object findUser(UserPrincipal userPrincipal, Long userId) {
 
-        User user = userRepository.findByUserId(userId)
-                .orElseThrow(() -> new CustomException(ExceptionCode.USER_NOT_FOUND));
+        Optional<User> findUser = userRepository.findByUserId(userId);
+        if (findUser.isEmpty()) {
+            return new UserDto.UserResponse(ExceptionCode.USER_NOT_FOUND);
+        }
+        User user = findUser.get();
 
         List<Item> items = itemRepository.findAllByUserUserId(user.getUserId());
         List<Record> records = recordRepository.findAllByUserUserId(user.getUserId());
