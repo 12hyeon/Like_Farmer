@@ -21,7 +21,7 @@ public class PostService {
 
     public Object createPost(PostDto.CreatePost request) {
         User user = userRepository.findById(request.getUserId())
-                .orElseThrow(() -> new IllegalArgumentException("해당 아이디(" + request.getUserId() + ")를 찾을 수 없습니다."));
+                .orElseThrow(() -> new CustomException(ExceptionCode.COMMENT_NOT_FOUND));
         Post post = Post.builder()
                 .user(user)
                 .userImage(request.getUserImage())

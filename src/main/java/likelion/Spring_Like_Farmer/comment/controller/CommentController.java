@@ -5,6 +5,8 @@ import likelion.Spring_Like_Farmer.comment.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/comment")
 @RequiredArgsConstructor
@@ -29,4 +31,11 @@ public class CommentController {
     public Object deleteComment(@PathVariable Long commentId) {
         return commentService.deleteComment(commentId);
     }
+
+    // 댓글 전체 불러오기
+    @GetMapping("/list/{postId}")
+    public List<CommentDto> getComments(@PathVariable Long postId) {
+        return commentService.getComments(postId);
+    }
+
 }

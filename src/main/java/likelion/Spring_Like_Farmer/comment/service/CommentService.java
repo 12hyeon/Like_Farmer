@@ -11,6 +11,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -40,4 +43,21 @@ public class CommentService {
         commentRepository.delete(comment);
         return new CommentDto.CommentResponse(ExceptionCode.COMMENT_DELETE_OK);
     }
+    public List<CommentDto> getComments(Long postId) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new CustomException(ExceptionCode.POST_NOT_FOUND));
+        return commentRepository.findByPost(post).stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+    }
+
+    private CommentDto convertToDto(Comment comment) {
+        CommentDto commentDto = new CommentDto();
+        commentDto.setCommentId(comment.getCommentId());
+        commentDto.setNickname(comment.getNickname());
+        commentDto.setContent(comment.getContent());
+        commentDto.setPostId(comment.getPost().getPostId());
+        return commentDto;
+    }
+
 }
