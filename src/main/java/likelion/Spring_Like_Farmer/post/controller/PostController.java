@@ -16,11 +16,13 @@ public class PostController {
     public Long createPost(@RequestBody PostDto.CreatePost request) {
         return postService.createPost(request);
     }
+
     // 게시글 수정하기
     @PatchMapping("/update/{postId}")
     public void updatePost(@PathVariable Long postId, @RequestBody PostDto.UpdatePost request) {
         postService.updatePost(postId, request);
     }
+
     // 게시글 삭제하기
     @DeleteMapping("/delete/{postId}")
     public void deletePost(@PathVariable Long postId) {

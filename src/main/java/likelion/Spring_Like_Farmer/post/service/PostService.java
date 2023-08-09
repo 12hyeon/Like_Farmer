@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+
 @Service
 @RequiredArgsConstructor
 public class PostService {
@@ -19,6 +21,10 @@ public class PostService {
     public Long createPost(PostDto.CreatePost request) {
         User user = userRepository.findById(request.getUserId())
                 .orElseThrow(() -> new IllegalArgumentException("해당 아이디(" + request.getUserId() + ")를 찾을 수 없습니다."));
+
+        // 최신 활동 내용 기록을 위함
+        user.setUpdatedAt(LocalDateTime.now());
+
         Post post = Post.builder()
                 .user(user)
                 .userImage(request.getUserImage())
@@ -31,6 +37,7 @@ public class PostService {
         postRepository.save(post);
         return post.getPostId();
     }
+
     @Transactional
     public void updatePost(Long postId, PostDto.UpdatePost request) {
         Post post = postRepository.findById(postId)

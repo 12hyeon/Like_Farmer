@@ -106,6 +106,15 @@ public class UserService {
         return new UserDto.UserResponse(ExceptionCode.USER_UPDATE_OK);
     }
 
+    public Object findUsersTier(UserPrincipal userPrincipal, String keyword) {
+        List<User> findUser = userRepository.findByUserIdOrderByTierDesc(userPrincipal.getUserId());
+        return new UserDto.UserResponse(ExceptionCode.USER_SEARCH_OK, findUser);
+    }
+
+    public Object findUsers(UserPrincipal userPrincipal, String keyword) {
+        List<User> findUser = userRepository.findByUserIdOrderByUpdatedAtDesc(userPrincipal.getUserId());
+        return new UserDto.UserResponse(ExceptionCode.USER_SEARCH_OK, findUser);
+    }
 
     // 전체 조회
     public Object findUser(UserPrincipal userPrincipal, Long userId) {
