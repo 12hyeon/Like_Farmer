@@ -3,12 +3,10 @@ package likelion.Spring_Like_Farmer.post.domain;
 import jakarta.persistence.*;
 import likelion.Spring_Like_Farmer.config.BaseEntity;
 import likelion.Spring_Like_Farmer.user.domain.User;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Getter
+@Setter
 @Entity
 @Table(name = "Post")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

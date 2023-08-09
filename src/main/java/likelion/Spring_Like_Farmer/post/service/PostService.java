@@ -18,7 +18,7 @@ public class PostService {
     @Transactional
     public Long createPost(PostDto.CreatePost request) {
         User user = userRepository.findById(request.getUserId())
-                .orElseThrow(() -> new IllegalArgumentException("User not found with id: " + request.getUserId()));
+                .orElseThrow(() -> new IllegalArgumentException("해당 아이디(" + request.getUserId() + ")를 찾을 수 없습니다."));
         Post post = Post.builder()
                 .user(user)
                 .userImage(request.getUserImage())
@@ -31,11 +31,18 @@ public class PostService {
         postRepository.save(post);
         return post.getPostId();
     }
-
+    @Transactional
+    public void updatePost(Long postId, PostDto.UpdatePost request) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 게시글(postId:" + postId + ")를 찾을 수 없습니다."));
+        post.setImage(request.getImage());
+        post.setDescription(request.getDescription());
+        post.setComment(request.getComment());
+    }
     @Transactional
     public void deletePost(Long postId) {
         Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new IllegalArgumentException("Post not found with id: " + postId));
+                .orElseThrow(() -> new IllegalArgumentException("해당 게시글(postId:" + postId + ")를 찾을 수 없습니다."));
         postRepository.delete(post);
     }
 }

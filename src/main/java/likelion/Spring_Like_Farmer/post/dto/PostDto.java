@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import static org.hibernate.sql.InFragment.NULL;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -20,42 +22,16 @@ public class PostDto {
     private String description;
     private String comment;
 
+    @Getter
+    @Setter
     public static class CreatePost {
-        public Long getUserId() {
-            return userId;
-        }
-
-        public String getUserImage() {
-            return userImage;
-        }
-
-        public String getUserNickname() {
-            return userNickname;
-        }
-
-        public String getUserLocation() {
-            return userLocation;
-        }
-
-        public String getImage() {
-            return image;
-        }
-
-        public String getDescription() {
-            return description;
-        }
-
-        public String getComment() {
-            return comment;
-        }
-
         private Long userId;
         private String userImage;
         private String userNickname;
         private String userLocation;
         private String image;
         private String description;
-        private String comment;
+        private String comment = NULL;
 
         @Builder
         public CreatePost(Long userId, String userImage, String userNickname,
@@ -70,6 +46,21 @@ public class PostDto {
         }
 
     }
+    @Getter
+    @Setter
+    public static class UpdatePost {
+
+        private String image;
+        private String description;
+        private String comment;
+        @Builder
+        public UpdatePost(String image, String description, String comment) {
+            this.image = image;
+            this.description = description;
+            this.comment = comment;
+        }
+    }
+
 
     public PostDto(Post post) {
         this.postId = post.getPostId();
