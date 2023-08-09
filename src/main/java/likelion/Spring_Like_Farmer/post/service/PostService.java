@@ -5,26 +5,23 @@ import likelion.Spring_Like_Farmer.post.dto.PostDto;
 import likelion.Spring_Like_Farmer.post.repository.PostRepository;
 import likelion.Spring_Like_Farmer.user.domain.User;
 import likelion.Spring_Like_Farmer.user.repository.UserRepository;
+import likelion.Spring_Like_Farmer.validation.CustomException;
+import likelion.Spring_Like_Farmer.validation.ExceptionCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class PostService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
 
-    @Transactional
-    public Long createPost(PostDto.CreatePost request) {
+
+    public Object createPost(PostDto.CreatePost request) {
         User user = userRepository.findById(request.getUserId())
-                .orElseThrow(() -> new IllegalArgumentException("해당 아이디(" + request.getUserId() + ")를 찾을 수 없습니다."));
-
-        // 최신 활동 내용 기록을 위함
-        user.setUpdatedAt(LocalDateTime.now());
-
+                .orElseThrow(() -> new CustomException(ExceptionCode.COMMENT_NOT_FOUND));
         Post post = Post.builder()
                 .user(user)
                 .userImage(request.getUserImage())
@@ -35,21 +32,21 @@ public class PostService {
                 .comment(request.getComment())
                 .build();
         postRepository.save(post);
-        return post.getPostId();
+        return new PostDto.PostResponse(ExceptionCode.POST_SAVE_OK);
     }
-
-    @Transactional
-    public void updatePost(Long postId, PostDto.UpdatePost request) {
+    public Object updatePost(Long postId, PostDto.UpdatePost request) {
         Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 게시글(postId:" + postId + ")를 찾을 수 없습니다."));
+                .orElseThrow(() -> new CustomException(ExceptionCode.POST_NOT_FOUND));
         post.setImage(request.getImage());
         post.setDescription(request.getDescription());
         post.setComment(request.getComment());
+        return new PostDto.PostResponse(ExceptionCode.POST_UPDATE_OK);
     }
-    @Transactional
-    public void deletePost(Long postId) {
+
+    public Object deletePost(Long postId) {
         Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 게시글(postId:" + postId + ")를 찾을 수 없습니다."));
+                .orElseThrow(() -> new CustomException(ExceptionCode.POST_NOT_FOUND));
         postRepository.delete(post);
+        return new PostDto.PostResponse(ExceptionCode.POST_DELETE_OK);
     }
 }

@@ -49,7 +49,20 @@ public enum ExceptionCode {
     RECORD_UPDATE_OK(SUCCESS, "J002", "RECORD 수정 성공"),
     RECORD_GET_OK(SUCCESS, "J003", "RECORD 조회 성공"),
     RECORD_DELETE_OK(SUCCESS, "J004", "RECORD 삭제 성공"),
-
+    /**
+     * post정보
+     */
+    POST_SAVE_OK(SUCCESS, "I000", "POST 저장 성공"),
+    POST_NOT_FOUND(NOT_FOUND_VALUE, "I001", "POST 정보 없음"),
+    POST_UPDATE_OK(SUCCESS, "I002", "POST 수정 성공"),
+    POST_DELETE_OK(SUCCESS, "I004", "POST 삭제 성공"),
+    /**
+     * comment정보
+     */
+    COMMENT_SAVE_OK(SUCCESS, "I000", "COMMENT 저장 성공"),
+    COMMENT_NOT_FOUND(NOT_FOUND_VALUE, "I001", "COMMENT 정보 없음"),
+    COMMENT_UPDATE_OK(SUCCESS, "I002", "COMMENT 수정 성공"),
+    COMMENT_DELETE_OK(SUCCESS, "I004", "COMMENT 삭제 성공"),
     /**
      * 잘못된 ExceptionCode
      */
