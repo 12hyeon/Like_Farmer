@@ -5,6 +5,8 @@ import likelion.Spring_Like_Farmer.post.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/post")
 @RequiredArgsConstructor
@@ -27,5 +29,10 @@ public class PostController {
     @DeleteMapping("/delete/{postId}")
     public Object deletePost(@PathVariable Long postId) {
         return postService.deletePost(postId);
+    }
+    // 게시물 전체 불러오기
+    @GetMapping("/list")
+    public List<PostDto> getAllPosts() {
+        return postService.getAllPosts();
     }
 }

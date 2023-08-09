@@ -3,6 +3,7 @@ package likelion.Spring_Like_Farmer.comment.service;
 import likelion.Spring_Like_Farmer.comment.domain.Comment;
 import likelion.Spring_Like_Farmer.comment.dto.CommentDto;
 import likelion.Spring_Like_Farmer.comment.repository.CommentRepository;
+import likelion.Spring_Like_Farmer.item.dto.ItemDto;
 import likelion.Spring_Like_Farmer.post.domain.Post;
 import likelion.Spring_Like_Farmer.post.repository.PostRepository;
 import likelion.Spring_Like_Farmer.validation.CustomException;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,10 +33,16 @@ public class CommentService {
     }
 
     public Object updateComment(Long commentId, CommentDto.UpdateComment request) {
-        Comment comment = commentRepository.findById(commentId)
-                .orElseThrow(() -> new CustomException(ExceptionCode.COMMENT_NOT_FOUND));
-        comment.setContent(request.getContent());
-        return new CommentDto.CommentResponse(ExceptionCode.COMMENT_UPDATE_OK);
+        Optional<Comment> findComment = commentRepository.findByCommentId(commentId);
+
+        if (findComment.isPresent() && findComment.get().getPassword().equals(request.getPassword())) {
+            Comment comment = commentRepository.findById(commentId)
+                    .orElseThrow(() -> new CustomException(ExceptionCode.COMMENT_NOT_FOUND));
+            comment.setContent(request.getContent());
+            return new CommentDto.CommentResponse(ExceptionCode.COMMENT_UPDATE_OK);
+        } else {
+            return new ItemDto.ItemResponse(ExceptionCode.COMMENT_NOT_FOUND);
+        }
     }
 
     public Object deleteComment(Long commentId) {

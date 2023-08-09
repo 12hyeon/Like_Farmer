@@ -11,6 +11,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -29,17 +33,17 @@ public class PostService {
                 .userLocation(request.getUserLocation())
                 .image(request.getImage())
                 .description(request.getDescription())
-                .comment(request.getComment())
+                .createdDate(LocalDateTime.now())
                 .build();
         postRepository.save(post);
         return new PostDto.PostResponse(ExceptionCode.POST_SAVE_OK);
     }
+
     public Object updatePost(Long postId, PostDto.UpdatePost request) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new CustomException(ExceptionCode.POST_NOT_FOUND));
         post.setImage(request.getImage());
         post.setDescription(request.getDescription());
-        post.setComment(request.getComment());
         return new PostDto.PostResponse(ExceptionCode.POST_UPDATE_OK);
     }
 
@@ -48,5 +52,11 @@ public class PostService {
                 .orElseThrow(() -> new CustomException(ExceptionCode.POST_NOT_FOUND));
         postRepository.delete(post);
         return new PostDto.PostResponse(ExceptionCode.POST_DELETE_OK);
+    }
+    public List<PostDto> getAllPosts() {
+        List<Post> posts = postRepository.findAllByOrderByCreatedDateDesc();
+        return posts.stream()
+                .map(PostDto::new)
+                .collect(Collectors.toList());
     }
 }

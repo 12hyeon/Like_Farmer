@@ -32,6 +32,10 @@ public class PostDto {
     @Getter
     @Setter
     public static class CreatePost {
+        private String userId;
+        private String userImage;
+        private String userNickname;
+
         private String userLocation;
         private String image;
         private String description;
@@ -42,7 +46,6 @@ public class PostDto {
             this.image = image;
             this.description = description;
         }
-
     }
     @Getter
     @Setter
