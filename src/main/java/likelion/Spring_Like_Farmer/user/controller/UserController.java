@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequiredArgsConstructor
@@ -32,7 +33,7 @@ public class UserController {
         return new ResponseEntity<>(userService.findUser(userPrincipal, userId), HttpStatus.OK);
     }
 
-    // 유저 리스트 티어 순
+    // 티어 기준 유저 리스트
     @GetMapping("/user/tier/{keyword}")
     public ResponseEntity<Object> getUsersTier(@CurrentUser UserPrincipal userPrincipal,
                                               @PathVariable String keyword) {
@@ -43,14 +44,29 @@ public class UserController {
     @GetMapping("/user/item/{keyword}")
     public ResponseEntity<Object> getUserItem(@CurrentUser UserPrincipal userPrincipal,
                                               @PathVariable String keyword) {
-        return new ResponseEntity<>(userService.findUsers(userPrincipal, keyword), HttpStatus.OK);
+        return new ResponseEntity<>(userService.findUsersItem(userPrincipal, keyword), HttpStatus.OK);
     }
 
+    // 유저 홈 정보
+    @GetMapping("/user/home/{userId}")
+    public ResponseEntity<Object> getUsersInfo(@CurrentUser UserPrincipal userPrincipal) {
+        return new ResponseEntity<>(userService.findUserInfo(userPrincipal), HttpStatus.OK);
+    }
+
+
     // 프로필 수정
-    @PatchMapping("/user")
+    @PatchMapping("/user/update")
     public ResponseEntity<Object> getUserInfo(@CurrentUser UserPrincipal userPrincipal,
                                               @RequestBody UserDto.UpdateUser updateUser) {
-        return new ResponseEntity<>(userService.updateUser(userPrincipal, updateUser), HttpStatus.OK);
+        return new ResponseEntity<>(userService.updateUser(userPrincipal, updateUser, null), HttpStatus.OK);
+    }
+
+    // 프로필 수정 : 파일 추가
+    @PatchMapping("/user")
+    public ResponseEntity<Object> getUserInfo(@CurrentUser UserPrincipal userPrincipal,
+                                              @RequestPart(value = "user")UserDto.UpdateUser updateUser,
+                                              @RequestPart(value = "file", required = false) MultipartFile file) {
+        return new ResponseEntity<>(userService.updateUser(userPrincipal, updateUser, file), HttpStatus.OK);
     }
 
     // 프로필 사진 올리기 -> tier 2

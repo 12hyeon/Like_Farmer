@@ -44,6 +44,7 @@ public class User extends BaseEntity {
 
     private int tier;
     private Quest.QuestInfo description;
+    private String item;
 
     private String phone;
     private String field;
@@ -59,6 +60,7 @@ public class User extends BaseEntity {
         this.nickname = signupUser.getNickname();
         this.location = signupUser.getLocation();
         this.tier = 1;
+        this.item = "풀스택";
         this.description = Quest.QuestInfo.ONE;
     }
 
@@ -74,6 +76,10 @@ public class User extends BaseEntity {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public void setItem(String newItem) {
+        this.item = newItem + " " + item;
     }
 
     public void setImage(String image) {

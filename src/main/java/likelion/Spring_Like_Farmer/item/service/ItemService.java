@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 
@@ -33,6 +34,11 @@ public class ItemService {
                 .user(user)
                 .build();
         itemRepository.save(item);
+
+        if (! user.getItem().contains(saveItem.getTitle())) {
+            user.setItem(saveItem.getTitle());
+        }
+        userRepository.save(user);
 
         return new ItemDto.ItemResponse(ExceptionCode.ITEM_SAVE_OK);
     }
@@ -57,13 +63,21 @@ public class ItemService {
         return new ItemDto.ItemResponse(ExceptionCode.ITEM_UPDATE_OK);
     }
 
-    public Object deleteItem(UserPrincipal itemPrincipal, Long itemId) {
+    public Object deleteItem(UserPrincipal userPrincipal, Long itemId) {
+
+        User user = userRepository.findByUserId(userPrincipal.getUserId()).get();
 
         Optional<Item> findItem = itemRepository.findByItemId(itemId);
         if (findItem.isEmpty()) {
             return new RecordDto.RecordResponse(ExceptionCode.ITEM_NOT_FOUND);
         }
         Item item = findItem.get();
+
+        List<Item> items = itemRepository.findAllByUserUserId(user.getUserId());
+        if (items.stream().filter(x -> Objects.equals(x.getTitle(), item.getTitle())).toList().size() == 1) {
+            user.getItem().replace(item.getTitle()+" ", "");
+            userRepository.save(user);
+        }
 
         itemRepository.delete(item);
         

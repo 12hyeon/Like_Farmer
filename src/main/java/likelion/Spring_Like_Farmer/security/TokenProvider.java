@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import java.time.ZonedDateTime;
 import java.util.Date;
 
-@PropertySource("classpath:application.yml")
 @Service
 public class TokenProvider {
 

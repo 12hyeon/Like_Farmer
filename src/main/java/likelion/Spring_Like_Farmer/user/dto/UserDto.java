@@ -4,11 +4,13 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import likelion.Spring_Like_Farmer.config.ResponseType;
 import likelion.Spring_Like_Farmer.item.domain.Item;
 import likelion.Spring_Like_Farmer.record.domain.Record;
+import likelion.Spring_Like_Farmer.user.domain.Quest;
 import likelion.Spring_Like_Farmer.user.domain.User;
 import likelion.Spring_Like_Farmer.validation.ExceptionCode;
 import lombok.Data;
 import lombok.Getter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
@@ -35,6 +37,21 @@ public class UserDto {
     }
 
     @Getter
+    public static class FindUser {
+        String nickname;
+        String name;
+        String item;
+        String image;
+
+        public FindUser(User user) {
+            this.image = user.getImage();
+            this.nickname = user.getNickname();
+            this.name = user.getName();
+            this.item = user.getItem();
+        }
+    }
+
+    @Getter
     public static class LoginUser {
         String id;
         String pw;
@@ -55,6 +72,30 @@ public class UserDto {
     }
 
     @Getter
+    public static class UsersInfoResponse extends ResponseType {
+
+        @JsonInclude(NON_NULL)
+        FindUser user;
+
+        @JsonInclude(NON_NULL)
+        List<FindUser> users;
+
+        public UsersInfoResponse(ExceptionCode exceptionCode, List<User> userList) {
+            super(exceptionCode);
+            users = new ArrayList<>();
+
+            for(User user : userList) {
+                this.users.add(new FindUser(user));
+            }
+        }
+
+        public UsersInfoResponse(ExceptionCode exceptionCode, User user) {
+            super(exceptionCode);
+            this.user = new FindUser(user);
+        }
+    }
+
+    @Getter
     public static class UserInfoResponse extends ResponseType {
         Long userId;
         String name;
@@ -64,6 +105,9 @@ public class UserDto {
         String field;
         String spec;
         String license;
+        int tier; // 추가
+        String description;
+        String item;
 
         List<Item> items;
         List<Record> records;
@@ -78,10 +122,12 @@ public class UserDto {
             this.field = user.getField();
             this.spec = user.getSpec();
             this.license = user.getLicense();
+            this.tier = user.getTier();
+            this.description = user.getDescription().getMessage();
+            this.item = user.getItem();
             this.items = items;
             this.records = records;
         }
-
     }
 
     @Getter

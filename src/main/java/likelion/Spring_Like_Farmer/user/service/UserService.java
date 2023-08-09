@@ -1,5 +1,6 @@
 package likelion.Spring_Like_Farmer.user.service;
 
+import likelion.Spring_Like_Farmer.file.FileService;
 import likelion.Spring_Like_Farmer.item.domain.Item;
 import likelion.Spring_Like_Farmer.item.repository.ItemRepository;
 import likelion.Spring_Like_Farmer.record.domain.Record;
@@ -20,6 +21,7 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
@@ -34,6 +36,7 @@ public class UserService {
     private final RecordRepository recordRepository;
     private final ItemRepository itemRepository;
     private final TokenProvider tokenProvider;
+    private final FileService fileService;
     private final AuthenticationManager authenticationManager;
 
     public TokenDto createToken(Authentication authentication, Long userId) {
@@ -92,7 +95,7 @@ public class UserService {
         return new UserDto.LoginResponse(ExceptionCode.LOGIN_OK, findUser.get(), tokenDto);
     }
 
-    public Object updateUser(UserPrincipal userPrincipal, UserDto.UpdateUser updateUser) {
+    public Object updateUser(UserPrincipal userPrincipal, UserDto.UpdateUser updateUser, MultipartFile file) {
 
         Optional<User> findUser = userRepository.findByUserId(userPrincipal.getUserId());
         if (findUser.isEmpty()) {
@@ -101,20 +104,34 @@ public class UserService {
         User user = findUser.get();
 
         user.updateUser(updateUser);
+
+        if (file != null) {
+            user.setImage(fileService.saveFile(user.getUserId(), file, "profile"));
+        }
+
         userRepository.save(user);
 
         return new UserDto.UserResponse(ExceptionCode.USER_UPDATE_OK);
     }
 
+    // 검색
     public Object findUsersTier(UserPrincipal userPrincipal, String keyword) {
-        List<User> findUser = userRepository.findByUserIdOrderByTierDesc(userPrincipal.getUserId());
-        return new UserDto.UserResponse(ExceptionCode.USER_SEARCH_OK, findUser);
+        List<User> findUser = userRepository.findByUserIdAndItemContainingOrderByTierDesc(userPrincipal.getUserId(), keyword);
+        return new UserDto.UsersInfoResponse(ExceptionCode.USER_SEARCH_OK, findUser);
     }
 
-    public Object findUsers(UserPrincipal userPrincipal, String keyword) {
-        List<User> findUser = userRepository.findByUserIdOrderByUpdatedAtDesc(userPrincipal.getUserId());
-        return new UserDto.UserResponse(ExceptionCode.USER_SEARCH_OK, findUser);
+    public Object findUsersItem(UserPrincipal userPrincipal, String keyword) {
+        List<User> findUser = userRepository.findByUserIdAndItemContainingOrderByUpdatedAtDesc(userPrincipal.getUserId(), keyword);
+        return new UserDto.UsersInfoResponse(ExceptionCode.USER_SEARCH_OK, findUser);
     }
+
+
+    // home
+    public Object findUserInfo(UserPrincipal userPrincipal) {
+        User user = userRepository.findByUserId(userPrincipal.getUserId()).get();
+        return new UserDto.UsersInfoResponse(ExceptionCode.USER_SEARCH_OK, user);
+    }
+
 
     // 전체 조회
     public Object findUser(UserPrincipal userPrincipal, Long userId) {

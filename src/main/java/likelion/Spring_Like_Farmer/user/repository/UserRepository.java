@@ -18,7 +18,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByToken(String token);
     boolean existsById(String id);
 
-    List<User> findByUserIdOrderByUpdatedAtDesc(Long userId);
-    List<User> findByUserIdOrderByTierDesc(Long userId);
+    List<User> findByUserIdAndItemContainingOrderByUpdatedAtDesc(Long userId, String item);
+    List<User> findByUserIdAndItemContainingOrderByTierDesc(Long userId, String item);
 
 }
