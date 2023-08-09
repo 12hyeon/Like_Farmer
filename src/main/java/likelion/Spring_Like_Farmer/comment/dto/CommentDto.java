@@ -1,8 +1,15 @@
 package likelion.Spring_Like_Farmer.comment.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import likelion.Spring_Like_Farmer.comment.domain.Comment;
+import likelion.Spring_Like_Farmer.config.ResponseType;
+import likelion.Spring_Like_Farmer.post.domain.Post;
+import likelion.Spring_Like_Farmer.validation.ExceptionCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 
 @Getter
 @Setter
@@ -39,5 +46,19 @@ public class CommentDto {
         }
     }
 
+    @Getter
+    public static class CommentResponse extends ResponseType {
+
+        @JsonInclude(NON_NULL)
+        private Comment comment;
+
+        public CommentResponse(ExceptionCode exceptionCode) {
+            super(exceptionCode);
+        }
+        public CommentResponse(ExceptionCode exceptionCode, Post post) {
+            super(exceptionCode);
+            this.comment = comment;
+        }
+    }
 
 }
