@@ -32,24 +32,15 @@ public class PostDto {
     @Getter
     @Setter
     public static class CreatePost {
-        private Long userId;
-        private String userImage;
-        private String userNickname;
         private String userLocation;
         private String image;
         private String description;
-        private String comment = NULL;
 
         @Builder
-        public CreatePost(Long userId, String userImage, String userNickname,
-                          String userLocation, String image, String description, String comment) {
-            this.userId = userId;
-            this.userImage = userImage;
-            this.userNickname = userNickname;
+        public CreatePost(String userLocation, String image, String description) {
             this.userLocation = userLocation;
             this.image = image;
             this.description = description;
-            this.comment = comment;
         }
 
     }
@@ -57,17 +48,16 @@ public class PostDto {
     @Setter
     public static class UpdatePost {
 
+        private String userLocation;
         private String image;
         private String description;
-        private String comment;
         @Builder
-        public UpdatePost(String image, String description, String comment) {
+        public UpdatePost(String userLocation, String image, String description) {
+            this.userLocation = userLocation;
             this.image = image;
             this.description = description;
-            this.comment = comment;
         }
     }
-
 
     public PostDto(Post post) {
         this.postId = post.getPostId();
@@ -76,7 +66,6 @@ public class PostDto {
             this.userId = user.getUserId();
             this.userImage = post.getUserImage();
             this.userNickname = post.getUserNickname();
-            this.userLocation = post.getUserLocation();
         }
         this.image = post.getImage();
         this.description = post.getDescription();
@@ -95,6 +84,14 @@ public class PostDto {
         public PostResponse(ExceptionCode exceptionCode, Post post) {
             super(exceptionCode);
             this.post = post;
+        }
+    }
+    @Getter
+    public static class PostListResponse extends ResponseType{
+        List<Post> postList;
+        public PostListResponse(ExceptionCode exceptionCode, List<Post> postList) {
+            super(exceptionCode);
+            this.postList = postList;
         }
     }
 }

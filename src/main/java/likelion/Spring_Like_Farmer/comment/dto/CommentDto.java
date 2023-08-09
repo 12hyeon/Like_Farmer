@@ -41,6 +41,7 @@ public class CommentDto {
     @Setter
     public static class UpdateComment {
         private String content;
+        private String password;
         public UpdateComment(String content) {
             this.content = content;
         }
