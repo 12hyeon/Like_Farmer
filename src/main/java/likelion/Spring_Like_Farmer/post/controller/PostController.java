@@ -6,11 +6,13 @@ import likelion.Spring_Like_Farmer.post.service.PostService;
 import likelion.Spring_Like_Farmer.security.CurrentUser;
 import likelion.Spring_Like_Farmer.security.UserPrincipal;
 import likelion.Spring_Like_Farmer.user.domain.User;
+import likelion.Spring_Like_Farmer.user.dto.UserDto;
 import likelion.Spring_Like_Farmer.validation.ExceptionCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,12 +30,27 @@ public class PostController {
         return new ResponseEntity<>(postService.savePost(postPrincipal, savePost), HttpStatus.OK);
     }
 
+    @PostMapping("/save/file")
+    public ResponseEntity<Object> savePost2(@CurrentUser UserPrincipal postPrincipal,
+                                            @RequestPart(value = "post") PostDto.SavePost savePost,
+                                            @RequestPart(value = "file", required = false) MultipartFile file) {
+        return new ResponseEntity<>(postService.savePost(postPrincipal, savePost, file), HttpStatus.OK);
+    }
+
     // 게시글 수정하기
     @PatchMapping("/{postId}")
     public ResponseEntity<Object> updatePost(@CurrentUser UserPrincipal postPrincipal,
                              @PathVariable Long postId,
                              @RequestBody PostDto.SavePost savePost) {
         return new ResponseEntity<>(postService.updatePost(postPrincipal, postId, savePost), HttpStatus.OK);
+    }
+
+    @PatchMapping("/{postId}/file")
+    public ResponseEntity<Object> updatePost2(@CurrentUser UserPrincipal postPrincipal,
+                                             @PathVariable Long postId,
+                                             @RequestPart(value = "post") PostDto.SavePost savePost,
+                                             @RequestPart(value = "file", required = false) MultipartFile file) {
+        return new ResponseEntity<>(postService.updatePost(postPrincipal, postId, savePost, file), HttpStatus.OK);
     }
 
     // 게시글 삭제하기
