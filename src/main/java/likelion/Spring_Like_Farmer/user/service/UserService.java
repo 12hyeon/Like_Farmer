@@ -103,11 +103,18 @@ public class UserService {
         }
         User user = findUser.get();
 
+        Optional<User> byNickname = userRepository.findByNickname(updateUser.getNickname());
+        if (byNickname.isPresent() && ! byNickname.get().getUserId().equals(userPrincipal.getUserId())) {
+            return new UserDto.UserResponse(ExceptionCode.SIGNUP_DUPLICATED_NICKNAME);
+        }
+
         user.updateUser(updateUser);
 
         if (file != null) {
             String image = fileService.saveFile(user.getUserId(), file, "profile");
             user.setImage(image);
+        } else {
+            user.setImage(null);
         }
 
         userRepository.save(user);
