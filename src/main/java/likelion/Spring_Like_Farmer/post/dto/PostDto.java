@@ -37,13 +37,12 @@ public class PostDto {
         private String location;
         private String image;
         private String description;
-        private LocalDateTime createdDate;
+
         @Builder
-        public SavePost(String location, String image, String description, LocalDateTime createdDate) {
+        public SavePost(String location, String image, String description) {
             this.location = location;
             this.image = image;
             this.description = description;
-            this.createdDate = createdDate;
         }
     }
 

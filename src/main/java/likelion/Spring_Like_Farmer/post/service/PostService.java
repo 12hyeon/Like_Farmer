@@ -61,6 +61,6 @@ public class PostService {
     }
 
     public List<Post> findAllPosts() {
-        return postRepository.findAllByOrderByCreatedDateDesc();
+        return postRepository.findAllByOrderByCreatedAtDesc();
     }
 }

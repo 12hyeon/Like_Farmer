@@ -19,13 +19,13 @@ public class Comment extends BaseEntity {
     @Column(name = "comment_id")
     private Long commentId;
 
-    @Column(name = "nickname", nullable = false)
+    @Column(name = "nickname")
     private String nickname;
 
-    @Column(name = "password", nullable = false)
+    @Column(name = "password")
     private String password;
 
-    @Column(name = "content", nullable = false)
+    @Column(name = "content")
     private String content;
 
     @ManyToOne

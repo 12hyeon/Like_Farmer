@@ -23,22 +23,21 @@ public class Post extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
     @Column(name = "user_image")
     private String userImage;
+
     @Column(name = "user_nickname")
     private String userNickname;
 
     @Column(name = "user_location")
     private String userLocation;
 
-    @Column(nullable = false)
     private String image;
 
-    @Column(nullable = false)
     private String description;
 
-    @Column(nullable = false)
-    private LocalDateTime createdDate;
+    //private LocalDateTime createdDate;
 
     @Builder
     public Post(User user, PostDto.SavePost savePost) {
@@ -48,12 +47,12 @@ public class Post extends BaseEntity {
         this.userLocation = savePost.getLocation();
         this.image = savePost.getImage();
         this.description = savePost.getDescription();
-        this.createdDate = savePost.getCreatedDate();
+        //this.createdDate = savePost.getCreatedDate();
     }
     public void updatePost(PostDto.SavePost savePost) {
         this.userLocation = savePost.getLocation();
         this.image = savePost.getImage();
         this.description = savePost.getDescription();
-        this.createdDate = savePost.getCreatedDate();
+        //this.createdDate = savePost.getCreatedDate();
     }
 }

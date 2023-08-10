@@ -21,7 +21,7 @@ public class Record extends BaseEntity {
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "record_user_id")
+    @JoinColumn(name = "user_id")
     private User user;
 
     String who;

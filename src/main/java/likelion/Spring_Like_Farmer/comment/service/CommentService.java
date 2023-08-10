@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
 @Transactional
 @RequiredArgsConstructor
 public class CommentService {
+
     private final CommentRepository commentRepository;
     private final PostRepository postRepository;
 
@@ -54,7 +55,7 @@ public class CommentService {
     public List<CommentDto> getComments(Long postId) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new CustomException(ExceptionCode.POST_NOT_FOUND));
-        return commentRepository.findByPost(post).stream()
+        return commentRepository.findAllByPostPostId(post.getPostId()).stream()
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
     }

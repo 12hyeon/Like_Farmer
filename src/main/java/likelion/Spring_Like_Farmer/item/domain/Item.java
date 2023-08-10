@@ -23,7 +23,7 @@ public class Item extends BaseEntity {
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "item_item_id")
+    @JoinColumn(name = "user_id")
     private User user;
 
     @Column(nullable = false)
