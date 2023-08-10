@@ -15,8 +15,8 @@ public class CommentController {
 
     // 댓글 달기
     @PostMapping("/save")
-    public Object createComment(@RequestBody CommentDto.SaveComment saveComment) {
-        return commentService.createComment(saveComment);
+    public Object saveComment(@RequestBody CommentDto.SaveComment saveComment) {
+        return commentService.saveComment(saveComment);
     }
 
     // 댓글 수정하기
@@ -33,7 +33,7 @@ public class CommentController {
     }
 
     // 댓글 전체 불러오기
-    @GetMapping("/list/{postId}")
+    @GetMapping("/{postId}")
     public List<CommentDto> getComments(@PathVariable Long postId) {
         return commentService.getComments(postId);
     }
