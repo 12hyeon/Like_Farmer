@@ -14,9 +14,9 @@ public class CommentController {
     private final CommentService commentService;
 
     // 댓글 달기
-    @PostMapping("/create")
-    public Object createComment(@RequestBody CommentDto.CreateComment request) {
-        return commentService.createComment(request);
+    @PostMapping("/save")
+    public Object createComment(@RequestBody CommentDto.SaveComment saveComment) {
+        return commentService.createComment(saveComment);
     }
 
     // 댓글 수정하기

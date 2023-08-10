@@ -24,21 +24,21 @@ public class CommentService {
     private final PostRepository postRepository;
 
 
-    public Object createComment(CommentDto.CreateComment request) {
-        Post post = postRepository.findById(request.getPostId())
+    public Object createComment(CommentDto.SaveComment saveComment) {
+        Post post = postRepository.findById(saveComment.getPostId())
                 .orElseThrow(() -> new CustomException(ExceptionCode.COMMENT_NOT_FOUND));
-        Comment comment = new Comment(request.getNickname(), request.getPassword(), request.getContent(), post);
+        Comment comment = new Comment(saveComment.getNickname(), saveComment.getPassword(), saveComment.getContent(), post);
         commentRepository.save(comment);
         return new CommentDto.CommentResponse(ExceptionCode.COMMENT_SAVE_OK);
     }
 
-    public Object updateComment(Long commentId, CommentDto.UpdateComment request) {
+    public Object updateComment(Long commentId, CommentDto.UpdateComment saveComment) {
         Optional<Comment> findComment = commentRepository.findByCommentId(commentId);
 
-        if (findComment.isPresent() && findComment.get().getPassword().equals(request.getPassword())) {
+        if (findComment.isPresent() && findComment.get().getPassword().equals(saveComment.getPassword())) {
             Comment comment = commentRepository.findById(commentId)
                     .orElseThrow(() -> new CustomException(ExceptionCode.COMMENT_NOT_FOUND));
-            comment.setContent(request.getContent());
+            comment.setContent(saveComment.getContent());
             return new CommentDto.CommentResponse(ExceptionCode.COMMENT_UPDATE_OK);
         } else {
             return new ItemDto.ItemResponse(ExceptionCode.COMMENT_NOT_FOUND);

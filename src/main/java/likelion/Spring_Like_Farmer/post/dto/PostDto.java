@@ -11,6 +11,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
@@ -20,60 +21,44 @@ import static org.hibernate.sql.InFragment.NULL;
 @Setter
 @NoArgsConstructor
 public class PostDto {
-    private Long postId;
-    private Long userId;
-    private String userImage;
-    private String userNickname;
-    private String userLocation;
-    private String image;
-    private String description;
-    private String comment;
+//    private Long postId;
+//    private Long userId;
+//    private String userImage;
+//    private String userNickname;
+//    private String userLocation;
+//    private String image;
+//    private String description;
+//    private String comment;
 
     @Getter
     @Setter
-    public static class CreatePost {
-        private String userId;
-        private String userImage;
-        private String userNickname;
+    public static class SavePost {
 
-        private String userLocation;
+        private String location;
         private String image;
         private String description;
-
+        private LocalDateTime createdDate;
         @Builder
-        public CreatePost(String userLocation, String image, String description) {
-            this.userLocation = userLocation;
+        public SavePost(String location, String image, String description, LocalDateTime createdDate) {
+            this.location = location;
             this.image = image;
             this.description = description;
-        }
-    }
-    @Getter
-    @Setter
-    public static class UpdatePost {
-
-        private String userLocation;
-        private String image;
-        private String description;
-        @Builder
-        public UpdatePost(String userLocation, String image, String description) {
-            this.userLocation = userLocation;
-            this.image = image;
-            this.description = description;
+            this.createdDate = createdDate;
         }
     }
 
-    public PostDto(Post post) {
-        this.postId = post.getPostId();
-        User user = post.getUser();
-        if (user != null) {
-            this.userId = user.getUserId();
-            this.userImage = post.getUserImage();
-            this.userNickname = post.getUserNickname();
-        }
-        this.image = post.getImage();
-        this.description = post.getDescription();
-        this.comment = post.getComment();
-    }
+//    public PostDto(Post post) {
+//        this.postId = post.getPostId();
+//        User user = post.getUser();
+//        if (user != null) {
+//            this.userId = user.getUserId();
+//            this.userImage = post.getUserImage();
+//            this.userNickname = post.getUserNickname();
+//        }
+//        this.image = post.getImage();
+//        this.description = post.getDescription();
+//        this.comment = post.getComment();
+//    }
 
     @Getter
     public static class PostResponse extends ResponseType {
