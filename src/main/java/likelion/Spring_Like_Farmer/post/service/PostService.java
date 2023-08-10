@@ -1,8 +1,11 @@
 package likelion.Spring_Like_Farmer.post.service;
 
+import likelion.Spring_Like_Farmer.item.domain.Item;
 import likelion.Spring_Like_Farmer.post.domain.Post;
 import likelion.Spring_Like_Farmer.post.dto.PostDto;
 import likelion.Spring_Like_Farmer.post.repository.PostRepository;
+import likelion.Spring_Like_Farmer.record.dto.RecordDto;
+import likelion.Spring_Like_Farmer.security.UserPrincipal;
 import likelion.Spring_Like_Farmer.user.domain.User;
 import likelion.Spring_Like_Farmer.user.repository.UserRepository;
 import likelion.Spring_Like_Farmer.validation.CustomException;
@@ -12,7 +15,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -22,41 +27,40 @@ public class PostService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
 
+    public Object savePost(UserPrincipal postPrincipal, PostDto.SavePost savePost) {
+        User user = userRepository.findByUserId(postPrincipal.getUserId()).get();
 
-    public Object createPost(PostDto.CreatePost request) {
-        User user = userRepository.findById(request.getUserId())
-                .orElseThrow(() -> new CustomException(ExceptionCode.COMMENT_NOT_FOUND));
         Post post = Post.builder()
+                .savePost(savePost)
                 .user(user)
-                .userImage(request.getUserImage())
-                .userNickname(request.getUserNickname())
-                .userLocation(request.getUserLocation())
-                .image(request.getImage())
-                .description(request.getDescription())
-                .createdDate(LocalDateTime.now())
                 .build();
         postRepository.save(post);
         return new PostDto.PostResponse(ExceptionCode.POST_SAVE_OK);
     }
 
-    public Object updatePost(Long postId, PostDto.UpdatePost request) {
-        Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new CustomException(ExceptionCode.POST_NOT_FOUND));
-        post.setImage(request.getImage());
-        post.setDescription(request.getDescription());
+    public Object updatePost(UserPrincipal postPrincipal, Long postId, PostDto.SavePost savePost) {
+        Optional<Post> findPost = postRepository.findByPostId(postId);
+        if (findPost.isEmpty()) {
+            return new RecordDto.RecordResponse(ExceptionCode.ITEM_NOT_FOUND);
+        }
+        Post post = findPost.get();
+
+        post.updatePost(savePost);
+        postRepository.save(post);
         return new PostDto.PostResponse(ExceptionCode.POST_UPDATE_OK);
     }
 
-    public Object deletePost(Long postId) {
-        Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new CustomException(ExceptionCode.POST_NOT_FOUND));
+    public Object deletePost(UserPrincipal postPrincipal, Long postId) {
+        Optional<Post> findPost = postRepository.findByPostId(postId);
+        if (findPost.isEmpty()) {
+            return new RecordDto.RecordResponse(ExceptionCode.ITEM_NOT_FOUND);
+        }
+        Post post = findPost.get();
         postRepository.delete(post);
         return new PostDto.PostResponse(ExceptionCode.POST_DELETE_OK);
     }
-    public List<PostDto> getAllPosts() {
-        List<Post> posts = postRepository.findAllByOrderByCreatedDateDesc();
-        return posts.stream()
-                .map(PostDto::new)
-                .collect(Collectors.toList());
+
+    public List<Post> findAllPosts() {
+        return postRepository.findAllByOrderByCreatedDateDesc();
     }
 }

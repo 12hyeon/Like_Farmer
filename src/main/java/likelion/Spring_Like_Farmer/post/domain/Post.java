@@ -2,6 +2,8 @@ package likelion.Spring_Like_Farmer.post.domain;
 
 import jakarta.persistence.*;
 import likelion.Spring_Like_Farmer.config.BaseEntity;
+import likelion.Spring_Like_Farmer.item.dto.ItemDto;
+import likelion.Spring_Like_Farmer.post.dto.PostDto;
 import likelion.Spring_Like_Farmer.user.domain.User;
 import lombok.*;
 
@@ -36,21 +38,22 @@ public class Post extends BaseEntity {
     private String description;
 
     @Column(nullable = false)
-    private String comment;
-
-    @Column(nullable = false)
     private LocalDateTime createdDate;
 
     @Builder
-    public Post(User user, String userImage, String userNickname,
-                String userLocation, String image, String description, String comment, LocalDateTime createdDate) {
+    public Post(User user, PostDto.SavePost savePost) {
         this.user = user;
-        this.userImage = userImage;
-        this.userNickname = userNickname;
-        this.userLocation = userLocation;
-        this.image = image;
-        this.description = description;
-        this.comment = comment;
-        this.createdDate = createdDate;
+        this.userImage = user.getImage();
+        this.userNickname = user.getNickname();
+        this.userLocation = savePost.getLocation();
+        this.image = savePost.getImage();
+        this.description = savePost.getDescription();
+        this.createdDate = savePost.getCreatedDate();
+    }
+    public void updatePost(PostDto.SavePost savePost) {
+        this.userLocation = savePost.getLocation();
+        this.image = savePost.getImage();
+        this.description = savePost.getDescription();
+        this.createdDate = savePost.getCreatedDate();
     }
 }

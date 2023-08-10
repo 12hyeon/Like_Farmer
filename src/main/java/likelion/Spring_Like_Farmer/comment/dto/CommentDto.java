@@ -22,14 +22,14 @@ public class CommentDto {
 
     @Getter
     @Setter
-    public static class CreateComment {
+    public static class SaveComment {
 
         private String nickname;
         private String password;
         private String content;
         private Long postId;
 
-        public CreateComment(String nickname, String password, String content, Long postId) {
+        public SaveComment(String nickname, String password, String content, Long postId) {
             this.nickname = nickname;
             this.password = password;
             this.content = content;

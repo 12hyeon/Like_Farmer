@@ -56,6 +56,7 @@ public enum ExceptionCode {
     POST_NOT_FOUND(NOT_FOUND_VALUE, "I001", "POST 정보 없음"),
     POST_UPDATE_OK(SUCCESS, "I002", "POST 수정 성공"),
     POST_DELETE_OK(SUCCESS, "I004", "POST 삭제 성공"),
+    POST_GET_OK(SUCCESS, "I003", "POST 불러오기 성공"),
     /**
      * comment정보
      */
