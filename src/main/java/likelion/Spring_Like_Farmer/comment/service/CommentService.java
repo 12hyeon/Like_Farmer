@@ -25,7 +25,7 @@ public class CommentService {
     private final PostRepository postRepository;
 
 
-    public Object createComment(CommentDto.SaveComment saveComment) {
+    public Object saveComment(CommentDto.SaveComment saveComment) {
         Post post = postRepository.findById(saveComment.getPostId())
                 .orElseThrow(() -> new CustomException(ExceptionCode.COMMENT_NOT_FOUND));
         Comment comment = new Comment(saveComment.getNickname(), saveComment.getPassword(), saveComment.getContent(), post);
