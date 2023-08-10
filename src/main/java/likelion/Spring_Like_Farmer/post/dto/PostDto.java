@@ -38,12 +38,12 @@ public class PostDto {
         private String image;
         private String description;
 
-        @Builder
+        /*@Builder
         public SavePost(String location, String image, String description) {
             this.location = location;
             this.image = image;
             this.description = description;
-        }
+        }*/
     }
 
 //    public PostDto(Post post) {
