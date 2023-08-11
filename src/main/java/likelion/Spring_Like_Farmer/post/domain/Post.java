@@ -30,8 +30,7 @@ public class Post extends BaseEntity {
     @Column(name = "user_nickname")
     private String userNickname;
 
-    @Column(name = "user_location")
-    private String userLocation;
+    private String location;
 
     private String image;
 
@@ -44,13 +43,13 @@ public class Post extends BaseEntity {
         this.user = user;
         this.userImage = user.getImage();
         this.userNickname = user.getNickname();
-        this.userLocation = savePost.getLocation();
+        this.location = savePost.getLocation();
         this.image = savePost.getImage();
         this.description = savePost.getDescription();
         //this.createdDate = savePost.getCreatedDate();
     }
     public void updatePost(PostDto.SavePost savePost) {
-        this.userLocation = savePost.getLocation();
+        this.location = savePost.getLocation();
         this.image = savePost.getImage();
         this.description = savePost.getDescription();
         //this.createdDate = savePost.getCreatedDate();
