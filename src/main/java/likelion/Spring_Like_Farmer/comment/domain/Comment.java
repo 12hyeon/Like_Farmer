@@ -1,8 +1,10 @@
 package likelion.Spring_Like_Farmer.comment.domain;
 
 import jakarta.persistence.*;
+import likelion.Spring_Like_Farmer.comment.dto.CommentDto;
 import likelion.Spring_Like_Farmer.config.BaseEntity;
 import likelion.Spring_Like_Farmer.post.domain.Post;
+import likelion.Spring_Like_Farmer.post.dto.PostDto;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -37,6 +39,12 @@ public class Comment extends BaseEntity {
         this.password = password;
         this.content = content;
         this.post = post;
+    }
+    public void updateComment(CommentDto.SaveComment saveComment) {
+        this.nickname = saveComment.getNickname();
+        this.password = saveComment.getPassword();
+        this.content = saveComment.getContent();
+        //this.post = saveComment.getPost();
     }
 }
 

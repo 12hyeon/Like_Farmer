@@ -20,7 +20,6 @@ public class CommentDto {
     @Getter
     @Setter
     public static class SaveComment {
-
         private String nickname;
         private String password;
         private String content;
@@ -31,17 +30,6 @@ public class CommentDto {
             this.password = password;
             this.content = content;
             this.postId = postId;
-        }
-    }
-
-    @Getter
-    @Setter
-    public static class UpdateComment {
-        private String content;
-        private String password;
-
-        public UpdateComment(String content) {
-            this.content = content;
         }
     }
 
