@@ -41,7 +41,7 @@ public class PostService {
     public Object updatePost(UserPrincipal postPrincipal, Long postId, PostDto.SavePost savePost) {
         Optional<Post> findPost = postRepository.findByPostId(postId);
         if (findPost.isEmpty()) {
-            return new RecordDto.RecordResponse(ExceptionCode.ITEM_NOT_FOUND);
+            return new RecordDto.RecordResponse(ExceptionCode.POST_NOT_FOUND);
         }
         Post post = findPost.get();
 
@@ -53,7 +53,7 @@ public class PostService {
     public Object deletePost(UserPrincipal postPrincipal, Long postId) {
         Optional<Post> findPost = postRepository.findByPostId(postId);
         if (findPost.isEmpty()) {
-            return new RecordDto.RecordResponse(ExceptionCode.ITEM_NOT_FOUND);
+            return new RecordDto.RecordResponse(ExceptionCode.POST_NOT_FOUND);
         }
         Post post = findPost.get();
         postRepository.delete(post);

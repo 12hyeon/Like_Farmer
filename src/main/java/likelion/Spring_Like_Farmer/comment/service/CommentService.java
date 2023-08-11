@@ -4,6 +4,7 @@ import likelion.Spring_Like_Farmer.comment.dto.CommentDto;
 import likelion.Spring_Like_Farmer.comment.repository.CommentRepository;
 import likelion.Spring_Like_Farmer.post.domain.Post;
 import likelion.Spring_Like_Farmer.post.repository.PostRepository;
+import likelion.Spring_Like_Farmer.record.dto.RecordDto;
 import likelion.Spring_Like_Farmer.validation.CustomException;
 import likelion.Spring_Like_Farmer.validation.ExceptionCode;
 import lombok.RequiredArgsConstructor;
@@ -40,7 +41,7 @@ public class CommentService {
             commentRepository.save(comment);
             return new CommentDto.CommentResponse(ExceptionCode.COMMENT_UPDATE_OK);
         } else {
-            throw new CustomException(ExceptionCode.COMMENT_NOT_FOUND);
+            return new RecordDto.RecordResponse(ExceptionCode.WRONG_PASSWORD);
         }
     }
 
@@ -53,7 +54,7 @@ public class CommentService {
             commentRepository.delete(comment);
             return new CommentDto.CommentResponse(ExceptionCode.COMMENT_DELETE_OK);
         } else {
-            throw new CustomException(ExceptionCode.WRONG_PASSWORD);
+            return new RecordDto.RecordResponse(ExceptionCode.WRONG_PASSWORD);
         }
     }
     public List<CommentDto> getComments(Long postId) {
