@@ -68,8 +68,8 @@ public enum ExceptionCode {
      * 잘못된 ExceptionCode
      */
     INVALID_FORM(INVALID_ACCESS, "Z000", "형식에 어긋난 이름"),
-    EMPTY(null, "", "");
-
+    EMPTY(null, "", ""),
+    WRONG_PASSWORD(INVALID_ACCESS, "Z000", "잘못된 비밀번호");
     private final HttpStatus status;
     private final String code;
     private final String message;

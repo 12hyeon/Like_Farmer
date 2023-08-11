@@ -1,5 +1,4 @@
 package likelion.Spring_Like_Farmer.comment.service;
-
 import likelion.Spring_Like_Farmer.comment.domain.Comment;
 import likelion.Spring_Like_Farmer.comment.dto.CommentDto;
 import likelion.Spring_Like_Farmer.comment.repository.CommentRepository;
@@ -11,7 +10,6 @@ import likelion.Spring_Like_Farmer.validation.ExceptionCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -20,37 +18,44 @@ import java.util.stream.Collectors;
 @Transactional
 @RequiredArgsConstructor
 public class CommentService {
-
     private final CommentRepository commentRepository;
     private final PostRepository postRepository;
 
 
-    public Object saveComment(CommentDto.SaveComment saveComment) {
-        Post post = postRepository.findById(saveComment.getPostId())
-                .orElseThrow(() -> new CustomException(ExceptionCode.COMMENT_NOT_FOUND));
+    public Object saveComment(Long postId, CommentDto.SaveComment saveComment) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new CustomException(ExceptionCode.POST_NOT_FOUND));
         Comment comment = new Comment(saveComment.getNickname(), saveComment.getPassword(), saveComment.getContent(), post);
         commentRepository.save(comment);
         return new CommentDto.CommentResponse(ExceptionCode.COMMENT_SAVE_OK);
     }
 
-    public Object updateComment(Long commentId, CommentDto.UpdateComment saveComment) {
+    public Object updateComment(Long postId, Long commentId, String password, CommentDto.UpdateComment updateComment) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new CustomException(ExceptionCode.POST_NOT_FOUND));
         Optional<Comment> findComment = commentRepository.findByCommentId(commentId);
 
-        if (findComment.isPresent() && findComment.get().getPassword().equals(saveComment.getPassword())) {
+        if (findComment.isPresent() && findComment.get().getPassword().equals(password)) {
             Comment comment = commentRepository.findById(commentId)
                     .orElseThrow(() -> new CustomException(ExceptionCode.COMMENT_NOT_FOUND));
-            comment.setContent(saveComment.getContent());
-            return new CommentDto.CommentResponse(ExceptionCode.COMMENT_UPDATE_OK);
+            comment.setContent(updateComment.getContent());
+            return new CommentDto.CommentResponse(ExceptionCode.COMMENT_UPDATE_OK, comment.getPost());
         } else {
-            return new ItemDto.ItemResponse(ExceptionCode.COMMENT_NOT_FOUND);
+            return new CommentDto.CommentResponse(ExceptionCode.COMMENT_NOT_FOUND);
         }
     }
 
-    public Object deleteComment(Long commentId) {
+    public Object deleteComment(Long postId, Long commentId, String password) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new CustomException(ExceptionCode.POST_NOT_FOUND));
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new CustomException(ExceptionCode.COMMENT_NOT_FOUND));
-        commentRepository.delete(comment);
-        return new CommentDto.CommentResponse(ExceptionCode.COMMENT_DELETE_OK);
+        if(comment.getPassword().equals(password)) {
+            commentRepository.delete(comment);
+            return new CommentDto.CommentResponse(ExceptionCode.COMMENT_DELETE_OK);
+        } else {
+            return new CommentDto.CommentResponse(ExceptionCode.WRONG_PASSWORD);
+        }
     }
     public List<CommentDto> getComments(Long postId) {
         Post post = postRepository.findById(postId)
@@ -68,5 +73,4 @@ public class CommentService {
         commentDto.setPostId(comment.getPost().getPostId());
         return commentDto;
     }
-
 }
