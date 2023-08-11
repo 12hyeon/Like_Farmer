@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -20,7 +21,6 @@ public class CommentDto {
     @Getter
     @Setter
     public static class SaveComment {
-
         private String nickname;
         private String password;
         private String content;
@@ -31,17 +31,6 @@ public class CommentDto {
             this.password = password;
             this.content = content;
             this.postId = postId;
-        }
-    }
-
-    @Getter
-    @Setter
-    public static class UpdateComment {
-        private String content;
-        private String password;
-
-        public UpdateComment(String content) {
-            this.content = content;
         }
     }
 

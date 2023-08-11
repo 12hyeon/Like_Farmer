@@ -2,7 +2,6 @@ package likelion.Spring_Like_Farmer.comment.service;
 import likelion.Spring_Like_Farmer.comment.domain.Comment;
 import likelion.Spring_Like_Farmer.comment.dto.CommentDto;
 import likelion.Spring_Like_Farmer.comment.repository.CommentRepository;
-import likelion.Spring_Like_Farmer.item.dto.ItemDto;
 import likelion.Spring_Like_Farmer.post.domain.Post;
 import likelion.Spring_Like_Farmer.post.repository.PostRepository;
 import likelion.Spring_Like_Farmer.validation.CustomException;
@@ -30,18 +29,18 @@ public class CommentService {
         return new CommentDto.CommentResponse(ExceptionCode.COMMENT_SAVE_OK);
     }
 
-    public Object updateComment(Long postId, Long commentId, String password, CommentDto.UpdateComment updateComment) {
+    public Object updateComment(Long postId, Long commentId, String password, CommentDto.SaveComment saveComment) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new CustomException(ExceptionCode.POST_NOT_FOUND));
         Optional<Comment> findComment = commentRepository.findByCommentId(commentId);
 
         if (findComment.isPresent() && findComment.get().getPassword().equals(password)) {
-            Comment comment = commentRepository.findById(commentId)
-                    .orElseThrow(() -> new CustomException(ExceptionCode.COMMENT_NOT_FOUND));
-            comment.setContent(updateComment.getContent());
-            return new CommentDto.CommentResponse(ExceptionCode.COMMENT_UPDATE_OK, comment.getPost());
+            Comment comment = findComment.get();
+            comment.updateComment(saveComment);
+            commentRepository.save(comment);
+            return new CommentDto.CommentResponse(ExceptionCode.COMMENT_UPDATE_OK);
         } else {
-            return new CommentDto.CommentResponse(ExceptionCode.COMMENT_NOT_FOUND);
+            throw new CustomException(ExceptionCode.COMMENT_NOT_FOUND);
         }
     }
 
@@ -50,11 +49,11 @@ public class CommentService {
                 .orElseThrow(() -> new CustomException(ExceptionCode.POST_NOT_FOUND));
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new CustomException(ExceptionCode.COMMENT_NOT_FOUND));
-        if(comment.getPassword().equals(password)) {
+        if (comment.getPassword().equals(password)) {
             commentRepository.delete(comment);
             return new CommentDto.CommentResponse(ExceptionCode.COMMENT_DELETE_OK);
         } else {
-            return new CommentDto.CommentResponse(ExceptionCode.WRONG_PASSWORD);
+            throw new CustomException(ExceptionCode.WRONG_PASSWORD);
         }
     }
     public List<CommentDto> getComments(Long postId) {
