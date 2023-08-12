@@ -7,6 +7,9 @@ import likelion.Spring_Like_Farmer.validation.ExceptionCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
+
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 
 @Getter
@@ -36,17 +39,28 @@ public class CommentDto {
 
     @Getter
     public static class CommentResponse extends ResponseType {
-
         @JsonInclude(NON_NULL)
         private Comment comment;
+
+        private String message;
 
         public CommentResponse(ExceptionCode exceptionCode) {
             super(exceptionCode);
         }
+        private List<CommentDto> commentList;
 
-        public CommentResponse(ExceptionCode exceptionCode, Post post) {
+        public CommentResponse(ExceptionCode exceptionCode, List<CommentDto> commentList, String message) { // 저장에 실패했을때 메시지와 함께 반환
             super(exceptionCode);
-            this.comment = comment;
+            this.commentList = commentList;
+            this.message = message;
+        }
+//        public CommentResponse(ExceptionCode exceptionCode, List<CommentDto> commentList) {
+//            super(exceptionCode);
+//            this.commentList = commentList;
+//        }
+        public CommentResponse(ExceptionCode exceptionCode, String message) {
+            super(exceptionCode);
+            this.message = message;
         }
     }
 }

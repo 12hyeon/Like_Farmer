@@ -20,19 +20,29 @@ public class CommentController {
     }
 
     // 댓글 수정하기 및 전체 댓글 불러오기
+//    @PatchMapping("/{postId}/{commentId}")
+//    public ResponseEntity<List<CommentDto>> updateComment(@PathVariable Long postId, @PathVariable Long commentId,
+//                                                          @RequestBody CommentDto.SaveComment saveComment) {
+//        commentService.updateComment(postId, commentId, saveComment.getPassword(), saveComment);
+//        return ResponseEntity.ok(commentService.getComments(postId));
+//    }
     @PatchMapping("/{postId}/{commentId}")
-    public ResponseEntity<List<CommentDto>> updateComment(@PathVariable Long postId, @PathVariable Long commentId,
-                                                          @RequestBody CommentDto.SaveComment saveComment) {
-        commentService.updateComment(postId, commentId, saveComment.getPassword(), saveComment);
-        return ResponseEntity.ok(commentService.getComments(postId));
+    public ResponseEntity<?> updateComment(@PathVariable Long postId, @PathVariable Long commentId,
+                                           @RequestBody CommentDto.SaveComment saveComment) {
+        return ResponseEntity.ok(commentService.updateComment(postId, commentId, saveComment.getPassword(), saveComment));
     }
 
     // 댓글 삭제하기 및 전체 댓글 불러오기
+//    @DeleteMapping("/{postId}/{commentId}")
+//    public ResponseEntity<List<CommentDto>> deleteComment(@PathVariable Long postId,
+//                                                          @PathVariable Long commentId, @RequestBody CommentDto.SaveComment deleteComment) {
+//        commentService.deleteComment(postId, commentId, deleteComment.getPassword());
+//        return ResponseEntity.ok(commentService.getComments(postId));
+//    }
     @DeleteMapping("/{postId}/{commentId}")
-    public ResponseEntity<List<CommentDto>> deleteComment(@PathVariable Long postId,
-                                                          @PathVariable Long commentId, @RequestBody CommentDto.SaveComment deleteComment) {
-        commentService.deleteComment(postId, commentId, deleteComment.getPassword());
-        return ResponseEntity.ok(commentService.getComments(postId));
+    public ResponseEntity<?> deleteComment(@PathVariable Long postId,
+                                           @PathVariable Long commentId, @RequestBody CommentDto.SaveComment deleteComment) {
+        return ResponseEntity.ok(commentService.deleteComment(postId, commentId, deleteComment.getPassword()));
     }
     // 댓글 전체 불러오기
     @GetMapping("/{postId}")
