@@ -38,9 +38,10 @@ public class CommentService {
             Comment comment = findComment.get();
             comment.updateComment(saveComment);
             commentRepository.save(comment);
-            return new CommentDto.CommentResponse(ExceptionCode.COMMENT_UPDATE_OK);
+            return new CommentDto.CommentResponse(ExceptionCode.COMMENT_UPDATE_OK, getComments(postId), "COMMENT 수정 성공");
+            //return getComments(postId);
         } else {
-            throw new CustomException(ExceptionCode.COMMENT_NOT_FOUND);
+            return new CommentDto.CommentResponse(ExceptionCode.WRONG_PASSWORD, getComments(postId), "잘못된 비밀번호");
         }
     }
 
@@ -51,9 +52,10 @@ public class CommentService {
                 .orElseThrow(() -> new CustomException(ExceptionCode.COMMENT_NOT_FOUND));
         if (comment.getPassword().equals(password)) {
             commentRepository.delete(comment);
-            return new CommentDto.CommentResponse(ExceptionCode.COMMENT_DELETE_OK);
+            return new CommentDto.CommentResponse(ExceptionCode.COMMENT_DELETE_OK, getComments(postId), "COMMENT 삭제 성공");
+            //return getComments(postId);
         } else {
-            throw new CustomException(ExceptionCode.WRONG_PASSWORD);
+            return new CommentDto.CommentResponse(ExceptionCode.WRONG_PASSWORD, getComments(postId),"잘못된 비밀번호");
         }
     }
     public List<CommentDto> getComments(Long postId) {
