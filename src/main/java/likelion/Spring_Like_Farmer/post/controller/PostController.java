@@ -20,27 +20,27 @@ import java.util.List;
 public class PostController {
     private final PostService postService;
 
-    // 게시글 올리기
+    // 게시글 올리기 : 글만, 이미지값: null
     @PostMapping("/save")
     public ResponseEntity<Object> savePost(@CurrentUser UserPrincipal postPrincipal,
                                            @RequestBody PostDto.SavePost savePost) {
-        return new ResponseEntity<>(postService.savePost(postPrincipal, savePost), HttpStatus.OK);
+        return new ResponseEntity<>(postService.savePost(postPrincipal, savePost, null), HttpStatus.OK);
     }
 
-    //    // 게시글 수정하기
-//    @PatchMapping("/{postId}/update")
-//    public ResponseEntity<Object> updatePost(@CurrentUser UserPrincipal postPrincipal,
-//                             @PathVariable Long postId,
-//                             @RequestBody PostDto.SavePost savePost) {
-//        return new ResponseEntity<>(postService.updatePost(postPrincipal, postId, savePost, null), HttpStatus.OK);
-//    }
     // 게시물 수정 : 파일 추가 또는 제거
-    @PatchMapping("/{postId}")
+    @PatchMapping("/{postId}/file")
     public ResponseEntity<Object> updatePostWithFile(@CurrentUser UserPrincipal postPrincipal,
                                                      @PathVariable Long postId,
-                                                     @RequestPart(value = "post") PostDto.SavePost savePost,
                                                      @RequestPart(value = "file", required = false) MultipartFile file) {
-        return new ResponseEntity<>(postService.updatePost(postPrincipal, postId, savePost, file), HttpStatus.OK);
+        return new ResponseEntity<>(postService.updatePost(postPrincipal, postId, file), HttpStatus.OK);
+    }
+
+    // 게시글 수정 : 내용 수정
+    @PatchMapping("/{postId}/update")
+    public ResponseEntity<Object> updatePost(@CurrentUser UserPrincipal postPrincipal,
+                                             @PathVariable Long postId,
+                                             @RequestBody PostDto.SavePost savePost) {
+        return new ResponseEntity<>(postService.updatePost(postPrincipal, postId, savePost), HttpStatus.OK);
     }
 
     // 게시글 삭제하기

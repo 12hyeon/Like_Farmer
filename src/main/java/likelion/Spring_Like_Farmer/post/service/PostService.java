@@ -31,18 +31,18 @@ public class PostService {
     private final UserRepository userRepository;
     private final FileService fileService;
 
-    public Object savePost(UserPrincipal postPrincipal, PostDto.SavePost savePost) {
-        User user = userRepository.findByUserId(postPrincipal.getUserId()).get();
+//    public Object savePost(UserPrincipal postPrincipal, PostDto.SavePost savePost) {
+//        User user = userRepository.findByUserId(postPrincipal.getUserId()).get();
+//
+//        Post post = Post.builder()
+//                .savePost(savePost)
+//                .user(user)
+//                .build();
+//        postRepository.save(post);
+//        return new PostDto.PostResponse(ExceptionCode.POST_SAVE_OK);
+//    }
 
-        Post post = Post.builder()
-                .savePost(savePost)
-                .user(user)
-                .build();
-        postRepository.save(post);
-        return new PostDto.PostResponse(ExceptionCode.POST_SAVE_OK);
-    }
-
-    public Object savePost(UserPrincipal postPrincipal, PostDto.SavePost savePost, MultipartFile file) {
+    public Object savePost(UserPrincipal postPrincipal, PostDto.SavePost savePost, MultipartFile file) { // 게시글 올리기 : 글만, 이미지값: null 에 사용
         User user = userRepository.findByUserId(postPrincipal.getUserId()).get();
 
         Post post = Post.builder()
@@ -58,11 +58,10 @@ public class PostService {
         }*/
 
         postRepository.save(post);
-
         return new PostDto.PostResponse(ExceptionCode.POST_SAVE_OK);
     }
 
-    public Object updatePost(UserPrincipal postPrincipal, Long postId, PostDto.SavePost savePost) {
+    public Object updatePost(UserPrincipal postPrincipal, Long postId, PostDto.SavePost savePost) { // 게시글 수정 : 내용 수정
         Optional<Post> findPost = postRepository.findByPostId(postId);
         if (findPost.isEmpty()) {
             return new RecordDto.RecordResponse(ExceptionCode.POST_NOT_FOUND);
@@ -75,21 +74,21 @@ public class PostService {
         return new PostDto.PostResponse(ExceptionCode.POST_UPDATE_OK);
     }
 
-    public Object updatePost(UserPrincipal postPrincipal, Long postId, PostDto.SavePost savePost, MultipartFile file) {
+    public Object updatePost(UserPrincipal postPrincipal, Long postId, MultipartFile file) { // 게시물 수정 : 파일 추가 또는 제거
         Optional<Post> findPost = postRepository.findByPostId(postId);
         if (findPost.isEmpty()) {
             return new RecordDto.RecordResponse(ExceptionCode.POST_NOT_FOUND);
         }
         Post post = findPost.get();
 
-        post.updatePost(savePost);
+        //post.updatePost(savePost);
 
-        /*if (file != null) {
+        if (file != null) {
             String image = fileService.saveFile(post.getPostId(), file, "post");
             post.setImage(image);
         } else {
             post.setImage(null);
-        }*/
+        }
         postRepository.save(post);
         return new PostDto.PostResponse(ExceptionCode.POST_UPDATE_OK);
     }
