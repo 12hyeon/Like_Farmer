@@ -38,11 +38,11 @@ public class PostController {
     }
 
     // 게시글 수정하기
-    @PatchMapping("/{postId}")
+    @PatchMapping("/{postId}/update")
     public ResponseEntity<Object> updatePost(@CurrentUser UserPrincipal postPrincipal,
                              @PathVariable Long postId,
                              @RequestBody PostDto.SavePost savePost) {
-        return new ResponseEntity<>(postService.updatePost(postPrincipal, postId, savePost), HttpStatus.OK);
+        return new ResponseEntity<>(postService.updatePost(postPrincipal, postId, savePost, null), HttpStatus.OK);
     }
 
     @PatchMapping("/{postId}/file")
@@ -65,5 +65,14 @@ public class PostController {
     public ResponseEntity<Object> getAllPosts() {
         List<Post> posts = postService.findAllPosts();
         return new ResponseEntity<>(new PostDto.PostListResponse(ExceptionCode.POST_GET_OK, posts), HttpStatus.OK);
+    }
+
+    // 게시물 수정 : 파일 추가
+    @PatchMapping("/{postId}")
+    public ResponseEntity<Object> getPostInfo(@CurrentUser UserPrincipal postPrincipal,
+                                              @PathVariable Long postId,
+                                              @RequestPart(value = "post") PostDto.SavePost savePost,
+                                              @RequestPart(value = "file", required = false) MultipartFile file) {
+        return new ResponseEntity<>(postService.updatePost(postPrincipal, postId, savePost, file), HttpStatus.OK);
     }
 }
