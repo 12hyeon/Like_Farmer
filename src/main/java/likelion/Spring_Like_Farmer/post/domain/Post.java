@@ -26,7 +26,7 @@ public class Post extends BaseEntity {
     private User user;
 
     @Column(name = "user_image")
-    private String userImage;
+    private String userImage = user.getImage();
 
     @Column(name = "user_nickname")
     private String userNickname;
