@@ -6,11 +6,13 @@ import likelion.Spring_Like_Farmer.post.service.PostService;
 import likelion.Spring_Like_Farmer.security.CurrentUser;
 import likelion.Spring_Like_Farmer.security.UserPrincipal;
 import likelion.Spring_Like_Farmer.user.domain.User;
+import likelion.Spring_Like_Farmer.user.dto.UserDto;
 import likelion.Spring_Like_Farmer.validation.ExceptionCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,11 +31,11 @@ public class PostController {
     }
 
     // 게시글 수정하기
-    @PatchMapping("/{postId}")
+    @PatchMapping("/{postId}/update")
     public ResponseEntity<Object> updatePost(@CurrentUser UserPrincipal postPrincipal,
                              @PathVariable Long postId,
                              @RequestBody PostDto.SavePost savePost) {
-        return new ResponseEntity<>(postService.updatePost(postPrincipal, postId, savePost), HttpStatus.OK);
+        return new ResponseEntity<>(postService.updatePost(postPrincipal, postId, savePost, null), HttpStatus.OK);
     }
 
     // 게시글 삭제하기
@@ -48,5 +50,14 @@ public class PostController {
     public ResponseEntity<Object> getAllPosts() {
         List<Post> posts = postService.findAllPosts();
         return new ResponseEntity<>(new PostDto.PostListResponse(ExceptionCode.POST_GET_OK, posts), HttpStatus.OK);
+    }
+
+    // 게시물 수정 : 파일 추가
+    @PatchMapping("/{postId}")
+    public ResponseEntity<Object> getPostInfo(@CurrentUser UserPrincipal postPrincipal,
+                                              @PathVariable Long postId,
+                                              @RequestPart(value = "post") PostDto.SavePost savePost,
+                                              @RequestPart(value = "file", required = false) MultipartFile file) {
+        return new ResponseEntity<>(postService.updatePost(postPrincipal, postId, savePost, file), HttpStatus.OK);
     }
 }

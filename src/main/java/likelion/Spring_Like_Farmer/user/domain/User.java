@@ -4,15 +4,13 @@ import jakarta.persistence.*;
 import likelion.Spring_Like_Farmer.config.BaseEntity;
 import likelion.Spring_Like_Farmer.user.dto.RecordDto;
 import likelion.Spring_Like_Farmer.user.dto.UserDto;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.util.List;
 
 @Getter
+@Setter
 @Entity
 @Table(name = "User")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
