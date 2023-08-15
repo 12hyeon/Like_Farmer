@@ -35,7 +35,8 @@ public class User extends BaseEntity {
     @Column(nullable = false)
     private String location;
 
-    private String image; // 처리 로직 필요!
+    @Column(nullable = true)
+    private String image;
 
     @Column(length = 400)
     private String token;

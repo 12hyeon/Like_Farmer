@@ -26,13 +26,14 @@ public class Post extends BaseEntity {
     private User user;
 
     @Column(name = "user_image")
-    private String userImage = user.getImage();
+    private String userImage;
 
     @Column(name = "user_nickname")
     private String userNickname;
 
     private String location;
 
+    @Column(nullable = true)
     private String image;
 
     private String description;
@@ -43,6 +44,7 @@ public class Post extends BaseEntity {
         this.userImage = user.getImage();
         this.userNickname = user.getNickname();
         this.location = savePost.getLocation();
+        this.userImage = user.getImage();
         // this.image = savePost.getImage();
         this.description = savePost.getDescription();
     }

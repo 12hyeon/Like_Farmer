@@ -57,8 +57,6 @@ public class UserController {
     @PatchMapping("/user/update")
     public ResponseEntity<Object> getUserInfo(@CurrentUser UserPrincipal userPrincipal,
                                               @RequestBody UserDto.UpdateUser updateUser) {
-        System.out.println("UserController.getUserInfo-------------------------1");
-        System.out.println("updateUser = " + updateUser.getNickname());
         return new ResponseEntity<>(userService.updateUser(userPrincipal, updateUser, null), HttpStatus.OK);
     }
 
@@ -66,19 +64,14 @@ public class UserController {
     @PatchMapping("/user/file")
     public ResponseEntity<Object> getUserInfoFile(@CurrentUser UserPrincipal userPrincipal,
                                               @RequestPart(value = "file", required = false) MultipartFile file) {
-        System.out.println("UserController.getUserInfoFile-----------------");
-        System.out.println("file = " + file);
         return new ResponseEntity<>(userService.updateUserFile(userPrincipal, file), HttpStatus.OK);
     }
 
-    // 프로필 수정 : 파일 추가
+    // 임시
     @PatchMapping("/user")
     public ResponseEntity<Object> getUserInfo(@CurrentUser UserPrincipal userPrincipal,
                                               @RequestPart(value = "user")UserDto.UpdateUser updateUser,
                                               @RequestPart(value = "file", required = false) MultipartFile file) {
-        System.out.println("UserController.getUserInfo-------------------------2");
-        System.out.println("updateUser = " + updateUser.getNickname());
-        System.out.println("file = " + file);
         return new ResponseEntity<>(userService.updateUser(userPrincipal, updateUser, file), HttpStatus.OK);
     }
 

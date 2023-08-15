@@ -50,12 +50,12 @@ public class PostService {
                 .user(user)
                 .build();
 
-        if (file != null) {
+        /*if (file != null) {
             String image = fileService.saveFile(post.getPostId(), file, "post");
             post.setImage(image);
         } else {
             post.setImage(null);
-        }
+        }*/
 
         postRepository.save(post);
 
@@ -84,12 +84,12 @@ public class PostService {
 
         post.updatePost(savePost);
 
-        if (file != null) {
+        /*if (file != null) {
             String image = fileService.saveFile(post.getPostId(), file, "post");
             post.setImage(image);
         } else {
             post.setImage(null);
-        }
+        }*/
         postRepository.save(post);
         return new PostDto.PostResponse(ExceptionCode.POST_UPDATE_OK);
     }

@@ -111,13 +111,12 @@ public class UserService {
 
         user.updateUser(updateUser);
 
-        if (file != null) {
-            System.out.println("file.getSize() = " + file.getSize());
+        /*if (file != null) {
             String image = fileService.saveFile(user.getUserId(), file, "profile");
             user.setImage(image);
         } else {
             user.setImage(null);
-        }
+        }*/
 
         userRepository.save(user);
 
