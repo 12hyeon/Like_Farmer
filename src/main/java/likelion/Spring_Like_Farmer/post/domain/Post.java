@@ -1,5 +1,6 @@
 package likelion.Spring_Like_Farmer.post.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import likelion.Spring_Like_Farmer.config.BaseEntity;
 import likelion.Spring_Like_Farmer.item.dto.ItemDto;
@@ -22,6 +23,7 @@ public class Post extends BaseEntity {
     private Long postId;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "user_id")
     private User user;
 
