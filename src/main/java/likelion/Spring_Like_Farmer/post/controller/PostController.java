@@ -20,14 +20,21 @@ import java.util.List;
 public class PostController {
     private final PostService postService;
 
-    // 게시글 올리기 : 글만, 이미지값: null
+//    // 게시글 올리기 : 글만, 이미지값: null
+//    @PostMapping("/save")
+//    public ResponseEntity<Object> savePost(@CurrentUser UserPrincipal postPrincipal,
+//                                           @RequestBody PostDto.SavePost savePost) {
+//        return new ResponseEntity<>(postService.savePost(postPrincipal, savePost, null), HttpStatus.OK);
+//    }
+
+     // 게시글 올리기 : 이미지만, 나머지는 null
     @PostMapping("/save")
     public ResponseEntity<Object> savePost(@CurrentUser UserPrincipal postPrincipal,
-                                           @RequestBody PostDto.SavePost savePost) {
-        return new ResponseEntity<>(postService.savePost(postPrincipal, savePost, null), HttpStatus.OK);
+                                           @RequestPart(value= "file", required = false) MultipartFile file) {
+        return new ResponseEntity<>(postService.savePost(postPrincipal, file), HttpStatus.OK);
     }
 
-    // 게시물 수정 : 파일 추가 또는 제거
+    // 게시물 수정 : 파일 수정
     @PatchMapping("/{postId}/file")
     public ResponseEntity<Object> updatePostWithFile(@CurrentUser UserPrincipal postPrincipal,
                                                      @PathVariable Long postId,
