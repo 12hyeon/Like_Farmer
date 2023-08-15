@@ -58,6 +58,7 @@ public class PostService {
         }
 
         postRepository.save(post);
+
         return new PostDto.PostResponse(ExceptionCode.POST_SAVE_OK);
     }
 
@@ -77,7 +78,7 @@ public class PostService {
     public Object updatePost(UserPrincipal postPrincipal, Long postId, PostDto.SavePost savePost, MultipartFile file) {
         Optional<Post> findPost = postRepository.findByPostId(postId);
         if (findPost.isEmpty()) {
-            return new RecordDto.RecordResponse(ExceptionCode.ITEM_NOT_FOUND);
+            return new RecordDto.RecordResponse(ExceptionCode.POST_NOT_FOUND);
         }
         Post post = findPost.get();
 
@@ -89,10 +90,10 @@ public class PostService {
         } else {
             post.setImage(null);
         }
-
         postRepository.save(post);
         return new PostDto.PostResponse(ExceptionCode.POST_UPDATE_OK);
     }
+
 
     public Object deletePost(UserPrincipal postPrincipal, Long postId) {
         Optional<Post> findPost = postRepository.findByPostId(postId);
@@ -107,4 +108,5 @@ public class PostService {
     public List<Post> findAllPosts() {
         return postRepository.findAllByOrderByCreatedAtDesc();
     }
+
 }

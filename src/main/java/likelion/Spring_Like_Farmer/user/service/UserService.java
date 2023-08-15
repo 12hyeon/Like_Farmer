@@ -3,6 +3,7 @@ package likelion.Spring_Like_Farmer.user.service;
 import likelion.Spring_Like_Farmer.file.FileService;
 import likelion.Spring_Like_Farmer.item.domain.Item;
 import likelion.Spring_Like_Farmer.item.repository.ItemRepository;
+import likelion.Spring_Like_Farmer.post.dto.PostDto;
 import likelion.Spring_Like_Farmer.record.domain.Record;
 import likelion.Spring_Like_Farmer.record.repository.RecordRepository;
 import likelion.Spring_Like_Farmer.security.TokenProvider;
@@ -111,12 +112,33 @@ public class UserService {
         user.updateUser(updateUser);
 
         if (file != null) {
+            System.out.println("file.getSize() = " + file.getSize());
             String image = fileService.saveFile(user.getUserId(), file, "profile");
             user.setImage(image);
         } else {
             user.setImage(null);
         }
 
+        userRepository.save(user);
+
+        return new UserDto.UserResponse(ExceptionCode.USER_UPDATE_OK);
+    }
+
+    // 사진 수정
+    public Object updateUserFile(UserPrincipal userPrincipal, MultipartFile file) {
+
+        Optional<User> findUser = userRepository.findByUserId(userPrincipal.getUserId());
+        if (findUser.isEmpty()) {
+            return new UserDto.UserResponse(ExceptionCode.USER_NOT_FOUND);
+        }
+        User user = findUser.get();
+
+        if (file != null) {
+            String image = fileService.saveFile(user.getUserId(), file, "profile");
+            user.setImage(image);
+        } else {
+            user.setImage(null);
+        }
         userRepository.save(user);
 
         return new UserDto.UserResponse(ExceptionCode.USER_UPDATE_OK);

@@ -57,6 +57,7 @@ public enum ExceptionCode {
     POST_UPDATE_OK(SUCCESS, "I002", "POST 수정 성공"),
     POST_DELETE_OK(SUCCESS, "I004", "POST 삭제 성공"),
     POST_GET_OK(SUCCESS, "I003", "POST 불러오기 성공"),
+    FILE_SIZE_EXCEED(INVALID_ACCESS, "I004", "FILE 크기 초과"),
     /**
      * comment정보
      */

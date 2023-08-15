@@ -37,6 +37,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException {
         try {
             String jwt = getJwtFromRequest(request);
+            System.out.println("jwt = " + jwt);
             if (StringUtils.hasText(jwt)) {
                 if (tokenProvider.isTokenExpired(jwt)) {
                     createResponse(ExceptionCode.EXPIRED_JWT_TOKEN, response);
@@ -45,12 +46,14 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
                     Long userId = tokenProvider.getUserIdFromToken(jwt);
                     UserDetails userDetails = customUserDetailsService.loadUserById(userId);
+                    System.out.println("userDetails.getUsername() = " + userDetails.getUsername());
                     UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails,
                             userDetails.getPassword(), userDetails.getAuthorities());
 
                     authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(authentication);
 
+                    System.out.println("TokenAuthenticationFilter.doFilterInternal---------");
                     filterChain.doFilter(request, response);
                 }
             } else {

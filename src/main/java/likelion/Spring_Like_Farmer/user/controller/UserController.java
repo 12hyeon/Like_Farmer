@@ -34,14 +34,14 @@ public class UserController {
     }
 
     // 티어 기준 유저 리스트
-    @GetMapping("/user/tier")
+    @PostMapping("/user/tier")
     public ResponseEntity<Object> getUsersTier(@CurrentUser UserPrincipal userPrincipal,
                                               @RequestBody UserDto.FindUsers findUser) {
         return new ResponseEntity<>(userService.findUsersTier(userPrincipal, findUser.getKeyword()), HttpStatus.OK);
     }
 
     // 농작물 기준 유저 리스트
-    @GetMapping("/user/post")
+    @PostMapping("/user/post")
     public ResponseEntity<Object> getUserPost(@CurrentUser UserPrincipal userPrincipal,
                                               @RequestBody UserDto.FindUsers findUser) {
         return new ResponseEntity<>(userService.findUsersPost(userPrincipal, findUser.getKeyword()), HttpStatus.OK);
@@ -53,12 +53,22 @@ public class UserController {
         return new ResponseEntity<>(userService.findUserInfo(userPrincipal), HttpStatus.OK);
     }
 
-
     // 프로필 수정
     @PatchMapping("/user/update")
     public ResponseEntity<Object> getUserInfo(@CurrentUser UserPrincipal userPrincipal,
                                               @RequestBody UserDto.UpdateUser updateUser) {
+        System.out.println("UserController.getUserInfo-------------------------1");
+        System.out.println("updateUser = " + updateUser.getNickname());
         return new ResponseEntity<>(userService.updateUser(userPrincipal, updateUser, null), HttpStatus.OK);
+    }
+
+    // 프로필 수정 : 파일 추가
+    @PatchMapping("/user/file")
+    public ResponseEntity<Object> getUserInfoFile(@CurrentUser UserPrincipal userPrincipal,
+                                              @RequestPart(value = "file", required = false) MultipartFile file) {
+        System.out.println("UserController.getUserInfoFile-----------------");
+        System.out.println("file = " + file);
+        return new ResponseEntity<>(userService.updateUserFile(userPrincipal, file), HttpStatus.OK);
     }
 
     // 프로필 수정 : 파일 추가
@@ -66,13 +76,13 @@ public class UserController {
     public ResponseEntity<Object> getUserInfo(@CurrentUser UserPrincipal userPrincipal,
                                               @RequestPart(value = "user")UserDto.UpdateUser updateUser,
                                               @RequestPart(value = "file", required = false) MultipartFile file) {
+        System.out.println("UserController.getUserInfo-------------------------2");
+        System.out.println("updateUser = " + updateUser.getNickname());
+        System.out.println("file = " + file);
         return new ResponseEntity<>(userService.updateUser(userPrincipal, updateUser, file), HttpStatus.OK);
     }
 
-    // 프로필 사진 올리기 -> tier 2
-
     // 글 올리기 -> tier 3
-
 
     /*@PostMapping("/user/logout") // 로그아웃
     public ResponseEntity<Object> logout(@CurrentUser UserPrincipal userPrincipal) {
