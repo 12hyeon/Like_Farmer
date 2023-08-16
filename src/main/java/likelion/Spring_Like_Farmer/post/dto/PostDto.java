@@ -33,30 +33,24 @@ public class PostDto {
     @Getter
     @Setter
     public static class SavePost {
-
         private String location;
         private String image;
         private String description;
-
+        /*@Builder
         public SavePost(String location, String image, String description) {
             this.location = location;
             this.image = image;
             this.description = description;
-        }
+        }*/
     }
 
-//    public PostDto(Post post) {
-//        this.postId = post.getPostId();
-//        User user = post.getUser();
-//        if (user != null) {
-//            this.userId = user.getUserId();
-//            this.userImage = post.getUserImage();
-//            this.userNickname = post.getUserNickname();
-//        }
-//        this.image = post.getImage();
-//        this.description = post.getDescription();
-//        this.comment = post.getComment();
+//    @Getter
+//    @Setter
+//    public static class SavePostContent {
+//        private String location;
+//        private String description;
 //    }
+
 
     @Getter
     public static class PostResponse extends ResponseType {

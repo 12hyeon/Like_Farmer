@@ -52,25 +52,27 @@ public enum ExceptionCode {
     /**
      * post정보
      */
-    POST_SAVE_OK(SUCCESS, "I000", "POST 저장 성공"),
-    POST_NOT_FOUND(NOT_FOUND_VALUE, "I001", "POST 정보 없음"),
-    POST_UPDATE_OK(SUCCESS, "I002", "POST 수정 성공"),
-    POST_DELETE_OK(SUCCESS, "I004", "POST 삭제 성공"),
-    POST_GET_OK(SUCCESS, "I003", "POST 불러오기 성공"),
-    FILE_SIZE_EXCEED(INVALID_ACCESS, "I004", "FILE 크기 초과"),
+    POST_SAVE_OK(SUCCESS, "P000", "POST 저장 성공"),
+    POST_NOT_FOUND(NOT_FOUND_VALUE, "P001", "POST 정보 없음"),
+    POST_UPDATE_OK(SUCCESS, "P002", "POST 수정 성공"),
+    POST_DELETE_OK(SUCCESS, "P004", "POST 삭제 성공"),
+    POST_GET_OK(SUCCESS, "P003", "POST 불러오기 성공"),
+    FILE_SIZE_EXCEED(INVALID_ACCESS, "P004", "FILE 크기 초과"),
+    FILE_NOT_FOUND(NOT_FOUND_VALUE, "P005", "FILE이 없음"),
     /**
      * comment정보
      */
-    COMMENT_SAVE_OK(SUCCESS, "I000", "COMMENT 저장 성공"),
-    COMMENT_NOT_FOUND(NOT_FOUND_VALUE, "I001", "COMMENT 정보 없음"),
-    COMMENT_UPDATE_OK(SUCCESS, "I002", "COMMENT 수정 성공"),
-    COMMENT_DELETE_OK(SUCCESS, "I004", "COMMENT 삭제 성공"),
+    COMMENT_SAVE_OK(SUCCESS, "M000", "COMMENT 저장 성공"),
+    COMMENT_NOT_FOUND(NOT_FOUND_VALUE, "M001", "COMMENT 정보 없음"),
+    COMMENT_UPDATE_OK(SUCCESS, "M002", "COMMENT 수정 성공"),
+    COMMENT_DELETE_OK(SUCCESS, "M004", "COMMENT 삭제 성공"),
     /**
      * 잘못된 ExceptionCode
      */
     INVALID_FORM(INVALID_ACCESS, "Z000", "형식에 어긋난 이름"),
+    INVALID_USER(INVALID_ACCESS, "Z001", "해당 글에 대한 접근 권한 없음"),
     EMPTY(null, "", ""),
-    WRONG_PASSWORD(INVALID_ACCESS, "Z000", "잘못된 비밀번호");
+    WRONG_PASSWORD(INVALID_ACCESS, "Z002", "잘못된 비밀번호");
     private final HttpStatus status;
     private final String code;
     private final String message;

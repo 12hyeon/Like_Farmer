@@ -47,7 +47,7 @@ public class Post extends BaseEntity {
         this.userNickname = user.getNickname();
         this.location = savePost.getLocation();
         this.userImage = user.getImage();
-        // this.image = savePost.getImage();
+        // this.image = savePostContent.getImage();
         this.description = savePost.getDescription();
     }
     public void updatePost(PostDto.SavePost savePost) {
