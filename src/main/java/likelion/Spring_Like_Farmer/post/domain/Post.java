@@ -40,6 +40,8 @@ public class Post extends BaseEntity {
 
     private String description;
 
+
+
     @Builder
     public Post(User user, PostDto.SavePost savePost) {
         this.user = user;
@@ -49,6 +51,11 @@ public class Post extends BaseEntity {
         this.userImage = user.getImage();
         // this.image = savePostContent.getImage();
         this.description = savePost.getDescription();
+
+        if (user.getTier() == 2) {
+            user.setTier(3);
+            user.setDescription(Quest.QuestInfo.THREE);
+        }
     }
     public void updatePost(PostDto.SavePost savePost) {
         this.location = savePost.getLocation();
@@ -58,9 +65,5 @@ public class Post extends BaseEntity {
 
     public void setImage(String image) {
         this.image = image;
-        if (user.getTier() == 2) {
-            user.setTier(3);
-            user.setDescription(Quest.QuestInfo.THREE);
-        }
     }
 }
