@@ -1,5 +1,6 @@
 package likelion.Spring_Like_Farmer.user.controller;
 
+import likelion.Spring_Like_Farmer.post.service.PostService;
 import likelion.Spring_Like_Farmer.security.CurrentUser;
 import likelion.Spring_Like_Farmer.security.UserPrincipal;
 import likelion.Spring_Like_Farmer.user.dto.UserDto;
@@ -14,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
+    private final PostService postService;
 
     @PostMapping("/auth/signup")
     public Object signup(@RequestBody UserDto.SignupUser signupUser) {
@@ -26,43 +28,40 @@ public class UserController {
     }
 
     // 프로필 조회
-    @GetMapping("/user/profile/{userId}")
-    public ResponseEntity<Object> getUsersInfo(@CurrentUser UserPrincipal userPrincipal,
-                                        @PathVariable Long userId) {
-        return new ResponseEntity<>(userService.findUser(userPrincipal, userId), HttpStatus.OK);
+    @GetMapping("/auth/profile/{userId}")
+    public ResponseEntity<Object> getUsersInfo(@PathVariable Long userId) {
+        return new ResponseEntity<>(userService.findUser(userId), HttpStatus.OK);
     }
 
     // 티어 기준 유저 리스트
-    @PostMapping("/user/tier")
-    public ResponseEntity<Object> getUsersTier(@CurrentUser UserPrincipal userPrincipal,
-                                              @RequestBody UserDto.FindUsers findUser) {
-        return new ResponseEntity<>(userService.findUsersTier(userPrincipal, findUser.getKeyword()), HttpStatus.OK);
+    @PostMapping("/auth/tier")
+    public ResponseEntity<Object> getUsersTier(@RequestBody UserDto.FindUsers findUser) {
+        return new ResponseEntity<>(userService.findUsersTier(findUser.getKeyword()), HttpStatus.OK);
     }
 
     // 농작물 기준 유저 리스트
-    @PostMapping("/user/post")
-    public ResponseEntity<Object> getUserPost(@CurrentUser UserPrincipal userPrincipal,
-                                              @RequestBody UserDto.FindUsers findUser) {
-        return new ResponseEntity<>(userService.findUsersPost(userPrincipal, findUser.getKeyword()), HttpStatus.OK);
+    @PostMapping("/auth/post")
+    public ResponseEntity<Object> getUserPost(@RequestBody UserDto.FindUsers findUser) {
+        return new ResponseEntity<>(userService.findUsersPost(findUser.getKeyword()), HttpStatus.OK);
     }
 
     // 유저 홈 정보
-    @GetMapping("/user/home")
-    public ResponseEntity<Object> getUsersInfo(@CurrentUser UserPrincipal userPrincipal) {
-        return new ResponseEntity<>(userService.findUserInfo(userPrincipal), HttpStatus.OK);
+    @GetMapping("/auth/home/{userId}")
+    public ResponseEntity<Object> getUsersInfo2(@PathVariable Long userId) {
+        return new ResponseEntity<>(userService.findUserInfo(userId), HttpStatus.OK);
     }
 
     // 프로필 수정
     @PatchMapping("/user/update")
-    public ResponseEntity<Object> getUserInfo(@CurrentUser UserPrincipal userPrincipal,
+    public ResponseEntity<Object> fixUserInfo(@CurrentUser UserPrincipal userPrincipal,
                                               @RequestBody UserDto.UpdateUser updateUser) {
         return new ResponseEntity<>(userService.updateUser(userPrincipal, updateUser, null), HttpStatus.OK);
     }
 
     // 프로필 수정 : 파일 추가
     @PatchMapping("/user/file")
-    public ResponseEntity<Object> getUserInfoFile(@CurrentUser UserPrincipal userPrincipal,
-                                              @RequestPart(value = "file", required = false) MultipartFile file) {
+    public ResponseEntity<Object> fixUserInfoFile(@CurrentUser UserPrincipal userPrincipal,
+                                                  @RequestPart(value = "file", required = false) MultipartFile file) {
         return new ResponseEntity<>(userService.updateUserFile(userPrincipal, file), HttpStatus.OK);
     }
 
@@ -85,4 +84,10 @@ public class UserController {
     public ResponseEntity<Object> resign(@CurrentUser UserPrincipal userPrincipal) {
         return new ResponseEntity<>(userService.resign(userPrincipal), HttpStatus.OK);
     }*/
+
+    // 게시물 전체 불러오기
+    @GetMapping("/auth/post")
+    public ResponseEntity<Object> getAllPosts() {
+        return new ResponseEntity<>(postService.findAllPosts(), HttpStatus.OK);
+    }
 }

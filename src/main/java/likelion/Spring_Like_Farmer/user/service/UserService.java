@@ -31,7 +31,7 @@ import java.util.Optional;
 @Transactional
 @RequiredArgsConstructor
 public class UserService {
-    
+
     private final UserRepository userRepository;
     private final RecordRepository recordRepository;
     private final ItemRepository itemRepository;
@@ -143,26 +143,26 @@ public class UserService {
     }
 
     // 검색
-    public Object findUsersTier(UserPrincipal userPrincipal, String keyword) {
+    public Object findUsersTier(String keyword) {
         List<User> findUser = userRepository.findByItemContainingOrderByTierDesc(keyword);
         return new UserDto.UsersInfoResponse(ExceptionCode.USER_SEARCH_OK, findUser);
     }
 
-    public Object findUsersPost(UserPrincipal userPrincipal, String keyword) {
+    public Object findUsersPost(String keyword) {
         List<User> findUser = userRepository.findByItemContainingOrderByUpdatedAtDesc(keyword);
         return new UserDto.UsersInfoResponse(ExceptionCode.USER_SEARCH_OK, findUser);
     }
 
 
     // home
-    public Object findUserInfo(UserPrincipal userPrincipal) {
-        User user = userRepository.findByUserId(userPrincipal.getUserId()).get();
+    public Object findUserInfo(Long userId) {
+        User user = userRepository.findByUserId(userId).get();
         return new UserDto.UsersInfoResponse(ExceptionCode.USER_SEARCH_OK, user);
     }
 
 
     // 전체 조회
-    public Object findUser(UserPrincipal userPrincipal, Long userId) {
+    public Object findUser(Long userId) {
 
         Optional<User> findUser = userRepository.findByUserId(userId);
         if (findUser.isEmpty()) {
