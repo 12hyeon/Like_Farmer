@@ -14,19 +14,19 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 @RestController
-@RequestMapping("/job")
+@RequestMapping("/auth/job")
 @RequiredArgsConstructor
 public class JobController {
     private final JobService jobService;
 
 
-    @PostMapping()
+    @PostMapping
     public ResponseEntity<Object> register(@ModelAttribute JobDto.RegisterJob regJob,
                                       @RequestPart(value= "file", required = false) MultipartFile file) {
         return new ResponseEntity<>(jobService.registerJob(regJob, file), HttpStatus.OK);
     }
 
-    @GetMapping()
+    @GetMapping
     public ResponseEntity<Object> getAllJobs() {
         List<Job> jobs = jobService.findAllJobs();
         return new ResponseEntity<>(new JobDto.JobListResponse(ExceptionCode.JOB_GET_OK, jobs), HttpStatus.OK);
