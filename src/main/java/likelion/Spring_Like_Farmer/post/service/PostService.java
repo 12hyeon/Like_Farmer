@@ -61,11 +61,19 @@ public class PostService {
                 post.setImage(null);
             }
             postRepository.save(post);
+
+            // 게시물을 저장한 사용자의 tier를 증가시키는 로직 추가
+            if (user.getTier() == 2) {
+                user.setTier(3);
+                userRepository.save(user);
+            }
+
             return new PostDto.PostResponse(ExceptionCode.POST_SAVE_OK);
         } else {
             return new PostDto.PostResponse(ExceptionCode.FILE_NOT_FOUND);
         }
     }
+
 
 //    public Object updatePost(UserPrincipal postPrincipal, Long postId, PostDto.SavePost savePost) { // 게시글 수정 : 내용 수정
 //        Optional<Post> findPost = postRepository.findByPostId(postId);

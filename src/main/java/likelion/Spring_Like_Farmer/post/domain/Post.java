@@ -52,11 +52,6 @@ public class Post extends BaseEntity {
         this.userImage = user.getImage();
         // this.image = savePostContent.getImage();
         this.description = savePost.getDescription();
-
-        if (user.getTier() == 2) {
-            user.setTier(3);
-            user.setDescription(Quest.QuestInfo.THREE);
-        }
     }
     public void updatePost(PostDto.SavePost savePost) {
         this.location = savePost.getLocation();
