@@ -44,4 +44,20 @@ public class FileService {
             throw new RuntimeException(e);
         }
     }
+
+    // 이미지 삭제를 위한 메소드 추가
+    public void deleteFile(Long id, String imagePath, String fileName) {
+        try {
+            Bucket bucket = StorageClient.getInstance().bucket(firebaseBucket);
+            String name = FilenameUtils.getBaseName(imagePath) + "-" + fileName + id
+                    + "." + FilenameUtils.getExtension(imagePath);
+            Blob blob = bucket.get(name);
+            if (blob != null) {
+                blob.delete();
+            }
+        }
+        catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

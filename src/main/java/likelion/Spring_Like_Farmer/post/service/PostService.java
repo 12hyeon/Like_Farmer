@@ -127,6 +127,11 @@ public class PostService {
             return new RecordDto.RecordResponse(ExceptionCode.INVALID_USER);
         }
 
+        // 이미지 파일 삭제 - 추가된 부분
+        if (post.getImage() != null && !post.getImage().isEmpty()) {
+            fileService.deleteFile(post.getPostId(), post.getImage(), "post");
+        }
+
         postRepository.delete(post);
         return new PostDto.PostResponse(ExceptionCode.POST_DELETE_OK);
     }

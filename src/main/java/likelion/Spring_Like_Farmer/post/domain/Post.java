@@ -2,6 +2,7 @@ package likelion.Spring_Like_Farmer.post.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import likelion.Spring_Like_Farmer.comment.domain.Comment;
 import likelion.Spring_Like_Farmer.config.BaseEntity;
 import likelion.Spring_Like_Farmer.item.dto.ItemDto;
 import likelion.Spring_Like_Farmer.post.dto.PostDto;
@@ -10,6 +11,7 @@ import likelion.Spring_Like_Farmer.user.domain.User;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -40,7 +42,8 @@ public class Post extends BaseEntity {
 
     private String description;
 
-
+    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
+    private List<Comment> comments;
 
     @Builder
     public Post(User user, PostDto.SavePost savePost) {
