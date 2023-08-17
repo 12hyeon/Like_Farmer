@@ -67,6 +67,11 @@ public enum ExceptionCode {
     COMMENT_UPDATE_OK(SUCCESS, "M002", "COMMENT 수정 성공"),
     COMMENT_DELETE_OK(SUCCESS, "M004", "COMMENT 삭제 성공"),
     /**
+     * job정보
+     */
+    JOB_SAVE_OK(SUCCESS, "N000", "JOB 저장 성공"),
+    JOB_GET_OK(SUCCESS, "N001", "JOB 불러오기 성공"),
+    /**
      * 잘못된 ExceptionCode
      */
     INVALID_FORM(INVALID_ACCESS, "Z000", "형식에 어긋난 이름"),
