@@ -70,7 +70,7 @@ public class SecurityConfig {
         // @formatter:off
         http
                 .authorizeHttpRequests((authorize) -> authorize
-                        .requestMatchers("/auth/**", "/comment/**").permitAll()
+                        .requestMatchers("/auth/**", "/comment/**", "/job/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .csrf((csrf) -> csrf.ignoringRequestMatchers("/**"))
