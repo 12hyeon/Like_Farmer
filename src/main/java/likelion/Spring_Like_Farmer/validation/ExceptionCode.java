@@ -49,6 +49,13 @@ public enum ExceptionCode {
     RECORD_UPDATE_OK(SUCCESS, "J002", "RECORD 수정 성공"),
     RECORD_GET_OK(SUCCESS, "J003", "RECORD 조회 성공"),
     RECORD_DELETE_OK(SUCCESS, "J004", "RECORD 삭제 성공"),
+
+    BRAND_SAVE_OK(SUCCESS, "K000", "BRAND 저장 성공"),
+    BRAND_NOT_FOUND(NOT_FOUND_VALUE, "K001", "BRAND 정보 없음"),
+    BRAND_UPDATE_OK(SUCCESS, "K002", "BRAND 수정 성공"),
+    BRAND_GET_OK(SUCCESS, "K003", "BRAND 조회 성공"),
+    BRAND_DELETE_OK(SUCCESS, "K004", "BRAND 삭제 성공"),
+
     /**
      * post정보
      */

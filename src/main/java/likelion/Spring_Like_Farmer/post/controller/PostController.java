@@ -67,4 +67,9 @@ public class PostController {
     public ResponseEntity<Object> getAllPosts() {
         return new ResponseEntity<>(postService.findAllPosts(), HttpStatus.OK);
     }
+
+    @GetMapping("/{postId}")
+    public ResponseEntity<Object> getPost(@PathVariable Long postId) {
+        return new ResponseEntity<>(postService.findPost(postId), HttpStatus.OK);
+    }
 }

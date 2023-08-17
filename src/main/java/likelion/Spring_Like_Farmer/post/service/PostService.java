@@ -143,4 +143,14 @@ public class PostService {
         return new PostDto.PostListResponse(ExceptionCode.POST_GET_OK, all);
     }
 
+    public Object findPost(Long postId) {
+
+        Optional<Post> findPost = postRepository.findByPostId(postId);
+        if (findPost.isEmpty()) {
+            return new RecordDto.RecordResponse(ExceptionCode.POST_NOT_FOUND);
+        }
+        Post post = findPost.get();
+        return new PostDto.PostResponse(ExceptionCode.POST_GET_OK, post);
+    }
+
 }
