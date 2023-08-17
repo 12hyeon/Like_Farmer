@@ -1,5 +1,6 @@
 package likelion.Spring_Like_Farmer.comment.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import likelion.Spring_Like_Farmer.comment.dto.CommentDto;
 import likelion.Spring_Like_Farmer.config.BaseEntity;
@@ -30,6 +31,7 @@ public class Comment extends BaseEntity {
     @Column(name = "content")
     private String content;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "post_id")
     private Post post;

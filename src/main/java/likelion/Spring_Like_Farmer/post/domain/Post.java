@@ -4,13 +4,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import likelion.Spring_Like_Farmer.comment.domain.Comment;
 import likelion.Spring_Like_Farmer.config.BaseEntity;
-import likelion.Spring_Like_Farmer.item.dto.ItemDto;
 import likelion.Spring_Like_Farmer.post.dto.PostDto;
 import likelion.Spring_Like_Farmer.user.domain.Quest;
 import likelion.Spring_Like_Farmer.user.domain.User;
 import lombok.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -24,8 +22,8 @@ public class Post extends BaseEntity {
     @Column(name = "post_id")
     private Long postId;
 
-    @ManyToOne
     @JsonIgnore
+    @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
@@ -37,7 +35,7 @@ public class Post extends BaseEntity {
 
     private String location;
 
-    @Column(nullable = true)
+    @Column
     private String image;
 
     private String description;

@@ -2,20 +2,15 @@ package likelion.Spring_Like_Farmer.post.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import likelion.Spring_Like_Farmer.config.ResponseType;
-import likelion.Spring_Like_Farmer.item.domain.Item;
 import likelion.Spring_Like_Farmer.post.domain.Post;
-import likelion.Spring_Like_Farmer.user.domain.User;
 import likelion.Spring_Like_Farmer.validation.ExceptionCode;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
-import static org.hibernate.sql.InFragment.NULL;
 
 @Getter
 @Setter
@@ -66,6 +61,7 @@ public class PostDto {
             this.post = post;
         }
     }
+
     @Getter
     public static class PostListResponse extends ResponseType{
         List<Post> postList;

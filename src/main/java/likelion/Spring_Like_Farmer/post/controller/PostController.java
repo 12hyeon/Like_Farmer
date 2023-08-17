@@ -65,7 +65,6 @@ public class PostController {
     // 게시물 전체 불러오기
     @GetMapping()
     public ResponseEntity<Object> getAllPosts() {
-        List<Post> posts = postService.findAllPosts();
-        return new ResponseEntity<>(new PostDto.PostListResponse(ExceptionCode.POST_GET_OK, posts), HttpStatus.OK);
+        return new ResponseEntity<>(postService.findAllPosts(), HttpStatus.OK);
     }
 }

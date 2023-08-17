@@ -3,7 +3,6 @@ package likelion.Spring_Like_Farmer.user.service;
 import likelion.Spring_Like_Farmer.file.FileService;
 import likelion.Spring_Like_Farmer.item.domain.Item;
 import likelion.Spring_Like_Farmer.item.repository.ItemRepository;
-import likelion.Spring_Like_Farmer.post.dto.PostDto;
 import likelion.Spring_Like_Farmer.record.domain.Record;
 import likelion.Spring_Like_Farmer.record.repository.RecordRepository;
 import likelion.Spring_Like_Farmer.security.TokenProvider;

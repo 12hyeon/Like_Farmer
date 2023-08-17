@@ -1,6 +1,5 @@
 package likelion.Spring_Like_Farmer.user.controller;
 
-import likelion.Spring_Like_Farmer.item.dto.ItemDto;
 import likelion.Spring_Like_Farmer.security.CurrentUser;
 import likelion.Spring_Like_Farmer.security.UserPrincipal;
 import likelion.Spring_Like_Farmer.user.dto.UserDto;

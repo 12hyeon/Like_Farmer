@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import likelion.Spring_Like_Farmer.config.ResponseType;
 import likelion.Spring_Like_Farmer.item.domain.Item;
 import likelion.Spring_Like_Farmer.record.domain.Record;
-import likelion.Spring_Like_Farmer.user.domain.Quest;
 import likelion.Spring_Like_Farmer.user.domain.User;
 import likelion.Spring_Like_Farmer.validation.ExceptionCode;
 import lombok.Data;
