@@ -54,7 +54,11 @@ public class BrandService {
         if (brand.isEmpty()) {
             return new BrandDto.BrandResponse(ExceptionCode.BRAND_NOT_FOUND);
         }
+
         Brand b = brand.get();
+        if (b.getUsers().size() >= 5) {
+            return new BrandDto.BrandResponse(ExceptionCode.BRAND_FARMER_EXCEED);
+        }
         b.addFarmer(user);
         System.out.println("b.getUsers() = " + b.getUsers());
         brandRepository.save(b);

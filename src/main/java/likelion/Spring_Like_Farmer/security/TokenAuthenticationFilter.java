@@ -19,6 +19,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
 
 public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
@@ -37,7 +38,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException {
         try {
             String jwt = getJwtFromRequest(request);
-            System.out.println("jwt = " + jwt);
+            System.out.println(getJwtFromRequest(request) + "---------" + LocalDate.now());
             if (StringUtils.hasText(jwt)) {
                 if (tokenProvider.isTokenExpired(jwt)) {
                     createResponse(ExceptionCode.EXPIRED_JWT_TOKEN, response);

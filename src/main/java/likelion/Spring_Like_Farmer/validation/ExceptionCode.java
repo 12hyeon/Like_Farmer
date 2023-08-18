@@ -55,6 +55,8 @@ public enum ExceptionCode {
     BRAND_UPDATE_OK(SUCCESS, "K002", "BRAND 수정 성공"),
     BRAND_GET_OK(SUCCESS, "K003", "BRAND 조회 성공"),
     BRAND_DELETE_OK(SUCCESS, "K004", "BRAND 삭제 성공"),
+    BRAND_FARMER_EXCEED(SUCCESS, "K000", "FARMER 수 초과"),
+
 
     /**
      * post정보
